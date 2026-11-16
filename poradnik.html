@@ -93,6 +93,7 @@ section.card.trafiony h2 mark.hl{background:#ff6d00;color:#fff}
 .tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .tools .planb{margin-top:0}
 #planb{display:none}body.wl #planb{display:inline-block}
+.kal{border:1px solid #2a3440;border-radius:10px;padding:10px;margin:8px 0;background:#11161b}.kal h4{margin:0 0 6px;color:#ffb300;font-size:14px}.krow{margin:6px 0;font-size:13.5px;line-height:2}.kal input:not([type=checkbox]),.kal select{background:#0b0f13;color:#e8edf2;border:1px solid #2f3b47;border-radius:6px;padding:4px 6px;width:64px;font-size:13.5px}.kal select{width:auto;max-width:100%}.kres{color:#9be27a;font-size:15px}
 .toolb{padding:7px 12px;border-radius:8px;border:1px solid #2b4a6b;background:#10202f;color:#8cc8ff;font-weight:700;font-size:13px;cursor:pointer}
 .klist{max-height:55vh;overflow:auto;margin-top:6px}
 .kod{padding:8px 0;border-top:1px solid var(--line);font-size:13.5px}
@@ -159,10 +160,11 @@ section.card.trafiony h2 mark.hl{background:#ff6d00;color:#fff}
   <div class="sub" style="margin-top:4px"><span id="verl"></span> <b id="wer" style="color:#ffb300"></b> · <a href="#" id="cn" style="color:#93a1b0"></a>
    <a id="akt" class="aktbtn" href="ecuporadnik:update" style="display:none"></a></div>
   <div id="nowa" class="nowa" style="display:none"></div>
-  <div class="tools"><button id="kodyb" class="toolb"></button><button id="sciezb" class="toolb"></button><button id="bezpb" class="toolb"></button><button id="planb" class="planb"></button></div>
+  <div class="tools"><button id="kodyb" class="toolb"></button><button id="sciezb" class="toolb"></button><button id="bezpb" class="toolb"></button><button id="kalkb" class="toolb"></button><button id="planb" class="planb"></button></div>
   <div id="bezp" class="box" style="display:none;margin-top:8px"><h3 id="bezph"></h3><div class="srow"><input id="ba" type="search" autocomplete="off"></div><div id="basug" class="basug"></div><div id="bbody"></div><input id="bq" type="hidden"></div>
   <div id="kody" class="box" style="display:none;margin-top:8px"><h3 id="kodyh"></h3><div class="srow"><input id="kq" type="search" autocomplete="off"><span id="kcnt" class="kp"></span></div><div id="klist" class="klist"></div></div>
   <div id="sciez" class="box" style="display:none;margin-top:8px"><h3 id="sciezh"></h3><div id="sbox"></div></div>
+  <div id="kalk" class="box" style="display:none;margin-top:8px"><h3 id="kalkh"></h3><div id="kalkbody"></div></div>
   <div id="plan" class="box" style="display:none;margin-top:8px"></div>
   <div id="cnbox" class="box" style="display:none;margin-top:8px"><h3 id="cnh"></h3><ul class="tips" id="cnlist"></ul></div>
   <div class="srow"><input id="q" type="search" autocomplete="off"><span id="sinfo"></span></div>
@@ -177,8 +179,9 @@ section.card.trafiony h2 mark.hl{background:#ff6d00;color:#fff}
 
 <script>
 // ---------- wersja i historia zmian (aktualizuj przy każdej zmianie) ----------
-const WERSJA="3.4 · 16.11.2026";
+const WERSJA="3.5 · 16.11.2026";
 const ZMIANY=[
+ ["3.5","Nowe karty: pompa, wtryskiwacz i zbiornik AdBlue (grzałki, temperatura, poziom), czujnik niskiego ciśnienia paliwa, czujnik obrotów turbiny, wentylator chłodnicy, przekaźniki, bezpieczniki (spadek napięcia), masy; nowy przycisk 🧮 Kalkulatory: napięcie ↔ ciśnienie, NTC, spadek napięcia na przewodzie; 16 nowych kodów","New cards: AdBlue pump, injector and tank (heaters, temperature, level), low fuel pressure sensor, turbo speed sensor, radiator fan, relays, fuses (voltage drop), grounds; new 🧮 Calculators button: voltage ↔ pressure, NTC, wire voltage drop; 16 new codes"],
  ["3.4","Nowe karty diesla: świece żarowe i sterownik, turbina VNT (N75 / nastawnik), zawór MPROP / SCV, wtryskiwacze CR (przelewy, korekty), czujnik doładowania, klapa dolotu; 20 nowych kodów błędów","New diesel cards: glow plugs and control unit, VNT turbo (N75 / actuator), MPROP / SCV valve, CR injectors (back-leak, corrections), boost sensor, intake flap; 20 new fault codes"],
  ["3.3","Drobne poprawki i porządki w menu","Minor fixes and menu tidy-up"],
  ["3.2","Bezpieczniki: ok. 40 nowych aut – Toyota Avensis II/III, Corolla E12/E15, Auris I, Yaris II, RAV4 III; Nissan Micra K12, Note, Juke, X-Trail T32, Navara D23; Mitsubishi L200; Suzuki Swift, SX4, Grand Vitara; Kia Cee'd I, Sportage III; Hyundai i20, i30 I, ix35, Santa Fe II; Land Rover Discovery 3/4, Range Rover Sport, Freelander 2, Defender; Jeep Renegade, Fiat 500X, Sedici","Fuses: about 40 new vehicles – Toyota Avensis II/III, Corolla E12/E15, Auris I, Yaris II, RAV4 III; Nissan Micra K12, Note, Juke, X-Trail T32, Navara D23; Mitsubishi L200; Suzuki Swift, SX4, Grand Vitara; Kia Cee'd I, Sportage III; Hyundai i20, i30 I, ix35, Santa Fe II; Land Rover Discovery 3/4, Range Rover Sport, Freelander 2, Defender; Jeep Renegade, Fiat 500X, Sedici"],
@@ -328,6 +331,8 @@ const KODY=[
 ["P0141","lambda","Grzałka sondy B1S2 – obwód","O2 sensor heater B1S2 – circuit","przerwana grzałka, bezpiecznik, wiązka","open heater, fuse, wiring"],
 ["P0171","lambda","Mieszanka za uboga (bank 1)","System too lean (bank 1)","nieszczelność dolotu, MAF, ciśnienie paliwa, wtryski","intake leak, MAF, fuel pressure, injectors"],
 ["P0172","lambda","Mieszanka za bogata (bank 1)","System too rich (bank 1)","wtryski, ciśnienie paliwa, MAF, czujnik ECT","injectors, fuel pressure, MAF, ECT sensor"],
+["P018C","lowfuel","Czujnik ciśnienia paliwa B – sygnał za niski","Fuel pressure sensor B – low","przerwa w sygnale, brak 5 V, czujnik","open signal wire, no 5 V, sensor"],
+["P018D","lowfuel","Czujnik ciśnienia paliwa B – sygnał za wysoki","Fuel pressure sensor B – high","zwarcie do 5 V, brak masy, czujnik","short to 5 V, missing ground, sensor"],
 ["P0190","rail","Czujnik ciśnienia paliwa w listwie – obwód","Fuel rail pressure sensor – circuit","wiązka, 5 V, czujnik","wiring, 5 V, sensor"],
 ["P0191","rail","Czujnik ciśnienia rail – zakres / wiarygodność","Fuel rail pressure sensor – range / performance","czujnik przesunięty (offset), pompa, regulator","sensor offset, pump, regulator"],
 ["P0192","rail","Czujnik ciśnienia rail – sygnał za niski","Fuel rail pressure sensor – low input","przerwa / zwarcie do masy, brak 5 V","open / short to ground, no 5 V"],
@@ -373,6 +378,7 @@ const KODY=[
 ["P0404","egr","EGR – zakres / wiarygodność","EGR – range / performance","zacięcie, nagar, czujnik położenia, adaptacja","sticking, carbon, position sensor, adaptation"],
 ["P0405","egr","Czujnik położenia EGR A – sygnał za niski","EGR sensor A – low input","przerwa / zwarcie do masy, brak 5 V","open / short to ground, no 5 V"],
 ["P0406","egr","Czujnik położenia EGR A – sygnał za wysoki","EGR sensor A – high input","zwarcie do 5 V, brak masy","short to 5 V, missing ground"],
+["P0480","fan","Wentylator chłodnicy 1 – obwód sterowania","Cooling fan 1 – control circuit","przekaźnik / moduł PWM, bezpiecznik, wiązka","relay / PWM module, fuse, wiring"],
 ["P0487","klapa","Klapa dolotu (EGR throttle) – obwód sterowania","EGR throttle position – control circuit","silnik klapy, wiązka, kostka","flap motor, wiring, connector"],
 ["P0488","klapa","Klapa dolotu (EGR throttle) – zakres / wiarygodność","EGR throttle position – range / performance","nagar, zacięcie, czujnik położenia, adaptacja","carbon, sticking, position sensor, adaptation"],
 ["P0520","oil","Czujnik / włącznik ciśnienia oleju – obwód","Oil pressure sensor / switch – circuit","wiązka, kostka, czujnik","wiring, connector, sensor"],
@@ -389,12 +395,25 @@ const KODY=[
 ["P0672","glow","Świeca żarowa cyl. 2 – obwód","Cylinder 2 glow plug – circuit","świeca, przewód, sterownik świec","glow plug, wire, glow plug module"],
 ["P0673","glow","Świeca żarowa cyl. 3 – obwód","Cylinder 3 glow plug – circuit","świeca, przewód, sterownik świec","glow plug, wire, glow plug module"],
 ["P0674","glow","Świeca żarowa cyl. 4 – obwód","Cylinder 4 glow plug – circuit","świeca, przewód, sterownik świec","glow plug, wire, glow plug module"],
+["P0691","fan","Wentylator chłodnicy 1 – sygnał za niski","Cooling fan 1 – control circuit low","zwarcie do masy, moduł / przekaźnik","short to ground, module / relay"],
+["P0692","fan","Wentylator chłodnicy 1 – sygnał za wysoki","Cooling fan 1 – control circuit high","zwarcie do plusa, przerwa, moduł / przekaźnik","short to positive, open circuit, module / relay"],
 ["P2002","dpf-filtr","Sprawność filtra DPF poniżej progu (bank 1)","DPF efficiency below threshold (bank 1)","pęknięty / wydmuchany DPF, czujnik różnicy ciśnień","cracked / gutted DPF, differential pressure sensor"],
-["P203F","can","Poziom AdBlue za niski","Reductant level too low","brak płynu, czujnik poziomu","no fluid, level sensor"],
-["P2047","can","Wtryskiwacz AdBlue – obwód / przerwa","Reductant injector – circuit / open","wiązka, wtryskiwacz AdBlue","wiring, AdBlue injector"],
-["P204F","can","Układ AdBlue – sprawność","Reductant system performance","pompa, filtr, wtrysk AdBlue, przewody, jakość płynu","pump, filter, AdBlue injector, lines, fluid quality"],
+["P203A","adzbiornik","Czujnik poziomu AdBlue – obwód","Reductant level sensor – circuit","wiązka, kostka, czujnik poziomu","wiring, connector, level sensor"],
+["P203C","adzbiornik","Czujnik poziomu AdBlue – sygnał za niski","Reductant level sensor – low","zwarcie do masy, czujnik","short to ground, sensor"],
+["P203D","adzbiornik","Czujnik poziomu AdBlue – sygnał za wysoki","Reductant level sensor – high","przerwa, czujnik","open circuit, sensor"],
+["P203F","adzbiornik","Poziom AdBlue za niski","Reductant level too low","brak płynu, czujnik poziomu","no fluid, level sensor"],
+["P2043","adzbiornik","Czujnik temperatury AdBlue – obwód","Reductant temperature sensor – circuit","wiązka, kostka (korozja), czujnik w module zbiornika","wiring, connector (corrosion), sensor in tank module"],
+["P2044","adzbiornik","Czujnik temperatury AdBlue – sygnał za niski","Reductant temperature sensor – low","zwarcie do masy, czujnik","short to ground, sensor"],
+["P2045","adzbiornik","Czujnik temperatury AdBlue – sygnał za wysoki","Reductant temperature sensor – high","przerwa, brak masy, czujnik","open circuit, missing ground, sensor"],
+["P2047","adwtrysk","Wtryskiwacz AdBlue – obwód / przerwa","Reductant injector – circuit / open","wiązka, wtryskiwacz AdBlue","wiring, AdBlue injector"],
+["P2048","adwtrysk","Wtryskiwacz AdBlue – sygnał za niski","Reductant injector – circuit low","zwarcie do masy, cewka wtrysku","short to ground, injector coil"],
+["P2049","adwtrysk","Wtryskiwacz AdBlue – sygnał za wysoki","Reductant injector – circuit high","przerwa, zwarcie do plusa, cewka","open circuit, short to positive, coil"],
+["P204F","adpompa","Układ AdBlue – sprawność","Reductant system performance","pompa, filtr, wtrysk AdBlue, przewody, jakość płynu","pump, filter, AdBlue injector, lines, fluid quality"],
 ["P207F","can","Jakość AdBlue – nieprawidłowa","Reductant quality performance","zły / rozcieńczony płyn (refraktometr 32,5%), czujnik jakości","bad / diluted fluid (refractometer 32.5%), quality sensor"],
-["P20E8","can","Ciśnienie AdBlue za niskie","Reductant pressure too low","pompa, filtr pompy, nieszczelne przewody, zamarznięty płyn","pump, pump filter, leaking lines, frozen fluid"],
+["P208A","adpompa","Pompa AdBlue – obwód sterowania","Reductant pump – control circuit","wiązka, zasilanie, silnik pompy","wiring, supply, pump motor"],
+["P20B9","adzbiornik","Grzałka AdBlue A – obwód sterowania","Reductant heater A – control circuit","grzałka, przekaźnik, bezpiecznik, wiązka","heater, relay, fuse, wiring"],
+["P20E8","adpompa","Ciśnienie AdBlue za niskie","Reductant pressure too low","pompa, filtr pompy, nieszczelne przewody, zamarznięty płyn","pump, pump filter, leaking lines, frozen fluid"],
+["P20E9","adpompa","Ciśnienie AdBlue za wysokie","Reductant pressure too high","zapchany wtrysk / przewód, zamarznięty płyn, czujnik ciśnienia","clogged injector / line, frozen fluid, pressure sensor"],
 ["P20EE","can","Sprawność katalizatora SCR poniżej progu (bank 1)","SCR NOx catalyst efficiency below threshold (bank 1)","jakość AdBlue, wtrysk AdBlue, czujnik NOx, katalizator","AdBlue quality, AdBlue injector, NOx sensor, catalyst"],
 ["P2101","etb","Silnik przepustnicy – zakres / wiarygodność","Throttle actuator control motor – range / performance","brud, zacięcie, silnik, wiązka, niskie napięcie","dirt, sticking, motor, wiring, low voltage"],
 ["P2119","etb","Przepustnica – zakres / wiarygodność korpusu","Throttle actuator control – throttle body range / performance","zacięta przepustnica, sprężyna, brak adaptacji","sticking throttle, spring, no adaptation"],
@@ -470,9 +489,9 @@ adblue:{t:["Błąd AdBlue / SCR","AdBlue / SCR fault"],start:"d1",n:{
  d1:{q:["Jakość AdBlue (refraktometr) ok. 32,5%?","Is AdBlue quality (refractometer) approx. 32.5%?"],y:"d2",n:"d1r"},
  d1r:{r:["Wymień płyn i przepłucz zbiornik – zły płyn daje błędy sprawności SCR.","Replace the fluid and flush the tank – bad fluid causes SCR efficiency faults."],c:"can"},
  d2:{q:["Pompa AdBlue buduje ciśnienie w teście (tester)?","Does the AdBlue pump build pressure in the test (scan tool)?"],y:"d3",n:"d2r"},
- d2r:{r:["Pompa, filtr pompy, nieszczelne przewody, grzałki (zamarznięty płyn).","Pump, pump filter, leaking lines, heaters (frozen fluid)."]},
+ d2r:{r:["Pompa, filtr pompy, nieszczelne przewody, grzałki (zamarznięty płyn).","Pump, pump filter, leaking lines, heaters (frozen fluid)."],c:"adpompa"},
  d3:{q:["Wtrysk AdBlue nie jest zakrystalizowany i rozpyla w teście dozowania?","Is the AdBlue injector free of crystals and spraying in the dosing test?"],y:"d4",n:"d3r"},
- d3r:{r:["Wtryskiwacz AdBlue – czyszczenie albo wymiana, sprawdź też kryształy w rurze wydechowej.","AdBlue injector – cleaning or replacement, also check crystals in the exhaust pipe."]},
+ d3r:{r:["Wtryskiwacz AdBlue – czyszczenie albo wymiana, sprawdź też kryształy w rurze wydechowej.","AdBlue injector – cleaning or replacement, also check crystals in the exhaust pipe."],c:"adwtrysk"},
  d4:{q:["Oba czujniki NOx startują po rozgrzaniu i pokazują wiarygodne wartości?","Do both NOx sensors start after warm-up and show plausible values?"],y:"d4r1",n:"d4r2"},
  d4r1:{r:["Sprawność katalizatora SCR albo temperatura spalin – sprawdź czujniki EGT i katalizator.","SCR catalyst efficiency or exhaust temperature – check EGT sensors and the catalyst."],c:"egt"},
  d4r2:{r:["Czujnik NOx – zasilanie, CAN albo czujnik.","NOx sensor – supply, CAN or the sensor."],c:"can"}}},
@@ -808,7 +827,7 @@ const PLAN=[
   ["Pinouty i wartości konkretnie dla VAG, Fiata / Alfy, Opla / Renault (Vivaro, Movano) – „sprawdzone w aucie”","Pinouts and values specifically for VAG, Fiat / Alfa, Opel / Renault (Vivaro, Movano) – “verified in car”"],
   ["Parametry live data do obejrzenia w AlfaOBD / MultiECUScan / Texa przy każdym czujniku","Live data parameters to check in AlfaOBD / MultiECUScan / Texa for each sensor"]]}
 ];
-const DONE={p1:1,p2:1,p4:1,p9:1};let PSEL={};try{PSEL=JSON.parse(localStorage.getItem("plan")||"{}")}catch(e){}
+const DONE={p1:1,p2:1,p4:1,p5:1,p6:1,p7:1,p9:1};let PSEL={};try{PSEL=JSON.parse(localStorage.getItem("plan")||"{}")}catch(e){}
 function renderPlan(){const en=lang==="en";let n=0;
  $("planb").textContent=(en?"💡 Development plan":"💡 Plan rozwoju")+(Object.keys(PSEL).filter(k=>PSEL[k]).length?` (${Object.keys(PSEL).filter(k=>PSEL[k]).length})`:"");
  $("plan").innerHTML=`<h3>${en?"Development plan – planned features":"Plan rozwoju – planowane funkcje"}</h3>
@@ -1299,6 +1318,182 @@ klapa:{name:"Diesel intake throttle / flap (shut-off flap)",pins:[["Motor M+","P
  test:{s:["Live data: target vs actual opening.","Switch off the engine – the flap is heard and seen closing.","Actuator test.","After cleaning – adaptation."],w:["motor / gear sticking despite cleaning","position sensor track drops out"],n:["<b>carbon – cleaning + adaptation</b>","wiring / connector","EGR – the flap and EGR often work together"]}}
 });
 
+// ---------- nowe karty: AdBlue / SCR i pozostałe (plan rozwoju p. 5–6) ----------
+CAT_EN["AdBlue / SCR"]="AdBlue / SCR";
+Object.assign(ICON,{
+ adpompa:G(`<rect x="40" y="30" width="90" height="70" rx="10" fill="#1e5aa8" stroke="#000"/><circle cx="72" cy="65" r="18" fill="#163f75" stroke="#0b2445"/><text x="64" y="70" font-size="12" font-weight="700" fill="#cfe3ff">P</text><rect x="100" y="45" width="24" height="10" fill="url(#m)"/>${plug(130,50)}<text x="40" y="120" font-size="10" fill="#93a1b0">pompa AdBlue</text>`),
+ adwtrysk:G(`<rect x="70" y="14" width="44" height="26" rx="5" fill="url(#p)"/>${plug(114,14,28,24)}<rect x="78" y="40" width="28" height="50" rx="5" fill="url(#m)" stroke="#555"/><polygon points="76,90 108,90 100,104 84,104" fill="url(#m)" stroke="#555"/><path d="M92 104 L80 124 M92 104 L92 126 M92 104 L104 124" stroke="#64b5f6" stroke-dasharray="2 3"/><circle cx="60" cy="60" r="6" fill="#eee" opacity=".7"/><text x="10" y="64" font-size="9" fill="#93a1b0">kryształy</text>`),
+ adzbiornik:G(`<rect x="30" y="30" width="130" height="80" rx="12" fill="#1e5aa8" stroke="#000"/><rect x="40" y="70" width="110" height="32" rx="6" fill="#64b5f6" opacity=".45"/><path d="M60 92 h70" stroke="#ff7043" stroke-width="4"/><rect x="90" y="20" width="24" height="14" fill="#333"/><text x="44" y="56" font-size="11" fill="#cfe3ff">AdBlue</text>`),
+ lowfuel:G(`<rect x="60" y="40" width="54" height="40" rx="6" fill="url(#p)" stroke="#000"/>${plug(114,44,30,30)}<polygon points="70,80 104,80 100,96 74,96" fill="url(#m)"/><rect x="80" y="96" width="14" height="16" fill="url(#m)"/><text x="40" y="124" font-size="10" fill="#93a1b0">niskie ciśnienie paliwa</text>`),
+ turbospeed:G(`<circle cx="70" cy="66" r="42" fill="#3b4148" stroke="#000"/>${Array.from({length:10},(_,i)=>{const a=i*Math.PI/5;return `<path d="M70 66 L${70+36*Math.cos(a)} ${66+36*Math.sin(a)}" stroke="#9aa3ab" stroke-width="5"/>`}).join("")}<circle cx="70" cy="66" r="9" fill="#1a1d21"/><rect x="112" y="40" width="22" height="30" rx="4" fill="url(#p)" stroke="#000"/>${plug(134,42,28,26)}`),
+ fan:G(`<circle cx="80" cy="66" r="48" fill="#2b2f35" stroke="#000"/>${Array.from({length:5},(_,i)=>{const a=i*2*Math.PI/5;return `<ellipse cx="${80+24*Math.cos(a)}" cy="${66+24*Math.sin(a)}" rx="20" ry="9" transform="rotate(${a*180/Math.PI+30} ${80+24*Math.cos(a)} ${66+24*Math.sin(a)})" fill="#5b646c"/>`}).join("")}<circle cx="80" cy="66" r="10" fill="#111"/><rect x="134" y="50" width="26" height="30" rx="4" fill="url(#p)"/>${plug(158,52,28,26)}`),
+ relay:G(`<rect x="60" y="20" width="80" height="80" rx="6" fill="#263238" stroke="#000"/><text x="100" y="56" text-anchor="middle" font-size="12" font-weight="700" fill="#cfd6dc">12V</text><text x="100" y="74" text-anchor="middle" font-size="9" fill="#93a1b0">30 85 86 87</text>${[72,90,108,126].map(x=>`<rect x="${x-4}" y="100" width="8" height="18" fill="url(#m)"/>`).join("")}`),
+ fuse:G(`${[["#e53935",40],["#1e88e5",90],["#f2b600",140]].map(([c,x])=>`<rect x="${x-18}" y="30" width="36" height="46" rx="5" fill="${c}" opacity=".9" stroke="#000"/><rect x="${x-12}" y="76" width="7" height="24" fill="url(#m)"/><rect x="${x+5}" y="76" width="7" height="24" fill="url(#m)"/><circle cx="${x-9}" cy="38" r="2.5" fill="#fff"/><circle cx="${x+9}" cy="38" r="2.5" fill="#fff"/>`).join("")}<text x="22" y="122" font-size="10" fill="#93a1b0">punkty pomiarowe na górze</text>`),
+ masy:G(`<rect x="20" y="40" width="60" height="44" rx="5" fill="url(#p)" stroke="#000"/><rect x="62" y="30" width="12" height="10" fill="#555"/><path d="M68 30 C 90 0 130 10 140 50" stroke="#222" stroke-width="7" fill="none"/><rect x="128" y="50" width="30" height="16" fill="url(#m)"/><path d="M128 100 h50 M136 108 h34 M144 116 h18" stroke="#9aa3ab" stroke-width="3"/><path d="M153 66 v34" stroke="#9aa3ab" stroke-width="3"/>`)
+});
+D.push(
+{id:"adpompa",cat:"AdBlue / SCR",name:"Pompa AdBlue – moduł zasilający SCR z czujnikiem ciśnienia",icon:"adpompa",
+ pins:[{n:"1",f:"+12 V (przekaźnik / sterownik SCR)",c:"zas"},{n:"2",f:"Masa pompy",c:"gnd"},{n:"3",f:"Sterowanie silnika pompy",v:"PWM z ECU",c:"sig"},{n:"4",f:"Zasilanie 5 V czujnika ciśnienia",c:"ref"},{n:"5",f:"Sygnał ciśnienia",c:"sig2"},{n:"6",f:"Masa czujnika",c:"gnd"}],
+ wave:{u:"bar",x:"live data: ciśnienie AdBlue – start, dozowanie, wyłączenie",y:[0,10],ticks:[0,2,4,6,8,10],m:[[.15,"start"],[.88,"stop"]],
+   s:[{f:nz(lerp([[0,0],[.15,0],[.3,5.1],[.5,5],[.55,4.6],[.6,5],[.85,5],[.9,0],[1,0]]),.04)}]},
+ meters:[{label:"Zapłon – zasilanie pompy",val:"12.4",unit:"V",mode:"V⎓",note:"napięcie akumulatora (gdy sterownik SCR załączy)"},{label:"Zasilanie czujnika ciśnienia",val:"5.00",unit:"V",mode:"V⎓",note:"4,9–5,1 V"},{label:"Pracuje – ciśnienie (live data)",val:"5.0",unit:"bar",mode:"",note:"zwykle ok. 4,5–9 bar zależnie od systemu – stałe, bez spadków"}],
+ tips:["Zimą pompa buduje ciśnienie dopiero po rozmrożeniu płynu – najpierw sprawdź grzałki.","Filtr pompy zapycha się kryształami – wymieniaj go przy błędach ciśnienia.","Po zgaszeniu silnika wiele układów odsysa płyn z przewodów – praca pompy po wyłączeniu jest normalna.","Przed diagnozą pompy sprawdź jakość płynu refraktometrem (ok. 32,5%).","Kolejność pinów różna (Bosch Denoxtronic, Continental, Delphi) – sprawdź schemat auta."]},
+
+{id:"adwtrysk",cat:"AdBlue / SCR",name:"Wtryskiwacz AdBlue (zawór dozujący)",icon:"adwtrysk",
+ pins:[{n:"1",f:"Zasilanie / sterowanie +",c:"zas"},{n:"2",f:"Sterowanie z ECU",v:"ECU zwiera do masy",c:"sig"}],
+ wave:{u:"V",x:"pin 2 – impulsy otwarcia (dozowanie)",y:[0,16],ticks:[0,4,8,12,16],
+   s:[{f:nz(t=>{const p=t*6%1;return p<.22?.4:12.3},.04)}]},
+ meters:[{label:"Odpięty – cewka",val:"12.5",unit:"Ω",mode:"Ω",note:"zwykle ok. 10–15 Ω (Bosch) – inne typy sprawdź w danych"},{label:"Zapłon – zasilanie",val:"12.4",unit:"V",mode:"V⎓",note:"na pinie zasilania, gdy sterownik SCR załączy"},{label:"Izolacja pin – korpus",val:"OL",unit:"MΩ",mode:"Ω",note:"brak przejścia do korpusu"}],
+ tips:["Kryształy AdBlue blokują dyszę i zarastają rurę wydechową przy wtrysku – oglądaj po demontażu.","Czyść ciepłą wodą (najlepiej demineralizowaną), nie drutem – łatwo uszkodzić dyszę.","Test dozowania rób na wymontowanym wtrysku, do menzurki; rękawice i okulary.","Niektóre wtryski mają kanały płynu chłodzącego – zapchane = przegrzanie wtrysku."]},
+
+{id:"adzbiornik",cat:"AdBlue / SCR",name:"Zbiornik AdBlue – grzałki, czujnik temperatury i poziomu",icon:"adzbiornik",
+ pins:[{n:"1",f:"Grzałka +",v:"przez przekaźnik / sterownik SCR",c:"zas"},{n:"2",f:"Grzałka −",c:"gnd"},{n:"3",f:"Czujnik temperatury (NTC)",c:"sig"},{n:"4",f:"Czujnik poziomu",c:"sig2"},{n:"5",f:"Masa czujników",c:"gnd"}],
+ wave:{u:"°C",x:"live data: temperatura AdBlue przy zimnym starcie (grzałki pracują)",y:[-15,25],ticks:[-10,0,10,20],m:[[.1,"start"]],
+   s:[{f:nz(lerp([[0,-10],[.1,-10],[.55,-1],[.7,2],[1,9]]),.15)}]},
+ meters:[{label:"Grzałka zbiornika (odpięta)",val:"2.0",unit:"Ω",mode:"Ω",note:"zwykle kilka Ω zależnie od typu – OL = przerwa"},{label:"Czujnik temp. (live data, zimne auto)",val:"8",unit:"°C",mode:"",note:"≈ temperatura otoczenia (± kilka °C)"},{label:"Czujnik poziomu (live data)",val:"75",unit:"%",mode:"",note:"zgodnie z ilością płynu; skokowy (kilka poziomów) albo ultradźwiękowy"}],
+ tips:["AdBlue zamarza ok. −11 °C – zimą układ najpierw rozmraża płyn (zbiornik, pompa, przewód).","Grzałka zbiornika, pompy i przewodu to często osobne obwody – sprawdź każdy, także przekaźnik i bezpiecznik.","Moduł w zbiorniku (pompa + grzałka + czujniki) jest często wymieniany w całości.","Nowsze auta mają czujnik jakości i poziomu na CAN – zobacz kartę NOx / AdBlue CAN.","Kostki korodują od płynu – oglądaj styki, zanim wymienisz czujnik."]},
+
+{id:"lowfuel",cat:"Ciśnienie",name:"Czujnik niskiego ciśnienia paliwa – benzyna z wtryskiem bezpośrednim (LPFP)",icon:"lowfuel",
+ pins:[{n:"1",f:"Masa",c:"gnd"},{n:"2",f:"Sygnał ciśnienia",c:"sig"},{n:"3",f:"Zasilanie 5 V",c:"ref"}],
+ wave:{u:"bar",x:"live data: zapłon (start pompy) → jałowy → obciążenie",y:[0,8],ticks:[0,2,4,6,8],m:[[.1,"zapłon"],[.45,"jałowy"]],
+   s:[{f:nz(lerp([[0,0],[.1,0],[.18,5.5],[.4,5.4],[.5,5],[.75,5.2],[1,5.2]]),.04)}]},
+ meters:[{label:"Zasilanie czujnika",val:"5.00",unit:"V",mode:"V⎓",note:"4,9–5,1 V"},{label:"Jałowy – sygnał",val:"2.6",unit:"V",mode:"V⎓",note:"zależnie od zakresu czujnika – przelicz w kalkulatorze"},{label:"Jałowy – live data",val:"5.0",unit:"bar",mode:"",note:"zwykle ok. 3–6 bar; rzeczywiste ≈ zadane, także pod obciążeniem"}],
+ tips:["Za niskie ciśnienie wstępne obniża też ciśnienie wysokie (rail) – szarpanie i brak mocy pod obciążeniem. Zacznij od niskiego.","Pompa w baku bywa sterowana PWM przez osobny sterownik pompy – sprawdź jego zasilanie i masę.","Manometr na króćcu serwisowym (jeśli jest) potwierdzi odczyt czujnika.","Kolejność pinów zależy od czujnika – 5 V i masę znajdź miernikiem."]},
+
+{id:"turbospeed",cat:"Obroty / fazy",name:"Czujnik prędkości obrotowej turbiny",icon:"turbospeed",
+ pins:[{n:"1",f:"Zasilanie",v:"5 V albo 12 V",c:"ref"},{n:"2",f:"Sygnał",c:"sig"},{n:"3",f:"Masa",c:"gnd"}],
+ wave:{u:"V",x:"sygnał prostokątny – częstotliwość rośnie z obrotami turbiny",y:[0,6],ticks:[0,1,2,3,4,5,6],
+   s:[{f:sq(.1,4.9,80,.5)}]},
+ meters:[{label:"Zapłon – zasilanie",val:"5.00",unit:"V",mode:"V⎓",note:"albo napięcie akumulatora – zależnie od czujnika"},{label:"Zapłon – sygnał (stoi)",val:"4.9",unit:"V",mode:"V⎓",note:"stały poziom ok. 0 albo ok. 5 V"},{label:"Jazda – częstotliwość",val:"5000",unit:"Hz",mode:"Hz",note:"kHz przy dziesiątkach tys. obr/min turbiny – lepiej oscyloskop / live data"}],
+ tips:["Stosowany tylko w części silników – sprawdź, czy auto go ma.","Czujnik patrzy na łopatki sprężarki przez wąską szczelinę – uważaj przy demontażu dolotu.","Spadek obrotów turbiny przy dużym doładowaniu zadanym – sprawdź sterowanie VNT i nieszczelności.","Przy samym błędzie czujnika zacznij od wiązki – blisko turbiny jest gorąco."]},
+
+{id:"fan",cat:"Elementy wykonawcze",name:"Wentylator chłodnicy – moduł PWM / przekaźniki",icon:"fan",
+ pins:[{n:"+",f:"+12 V (gruby bezpiecznik)",c:"zas"},{n:"−",f:"Masa",c:"gnd"},{n:"S",f:"Sygnał PWM z ECU",c:"sig"},{n:"D",f:"Zasilanie 15 / diagnostyka",v:"zależnie od auta",c:"sig2"}],
+ wave:{u:"V",x:"sygnał sterujący PWM – wypełnienie = prędkość wentylatora",y:[0,14],ticks:[0,4,8,12],
+   s:[{f:nz(sq(.3,12.2,10,.4),.03)}]},
+ meters:[{label:"Pracuje – zasilanie (+ / −)",val:"12.8",unit:"V",mode:"V⎓",note:"pod obciążeniem spadek na + i − łącznie do ok. 0,5 V"},{label:"Sygnał PWM – wypełnienie",val:"40",unit:"%",mode:"Hz",note:"rośnie z temperaturą / ciśnieniem klimatyzacji"},{label:"Prąd silnika – cęgi",val:"25",unit:"A",mode:"",note:"zależnie od mocy (np. 200–600 W ≈ 15–45 A)"}],
+ tips:["Szybki test: tester – test elementów wykonawczych albo odpięty czujnik temperatury (ECU zwykle włącza wentylator awaryjnie).","⚠ Wentylator może ruszyć sam przy wyłączonym zapłonie – trzymaj ręce z dala.","Moduł PWM ma zwykle 2 grube przewody (zasilanie, masa) i 1–2 cienkie (sygnał, zasilanie 15).","Zatarte łożysko: ciężko się kręci ręką, duży prąd, przepalone bezpieczniki.","Starsze auta: 2 biegi przez przekaźniki i rezystor – sprawdź oba biegi osobno."]},
+
+{id:"relay",cat:"Elementy wykonawcze",name:"Przekaźnik samochodowy 4 / 5-pin (ISO)",icon:"relay",
+ pins:[{n:"30",f:"Wejście +12 V",c:"zas"},{n:"85",f:"Cewka −",c:"gnd"},{n:"86",f:"Cewka +",v:"sterowanie",c:"sig"},{n:"87",f:"Wyjście (zwierny)",c:"mot"},{n:"87a",f:"Wyjście (rozwierny)",v:"tylko 5-pin",c:"sig2"}],
+ wave:{u:"V",x:"napięcie na 87: cewka bez zasilania → załączona → wyłączona",y:[0,14],ticks:[0,4,8,12],m:[[.3,"ON"],[.75,"OFF"]],
+   s:[{f:nz(lerp([[0,0],[.3,0],[.31,12.3],[.75,12.3],[.76,0],[1,0]]),.03)}]},
+ meters:[{label:"Cewka 85–86 (wyjęty)",val:"80",unit:"Ω",mode:"Ω",note:"zwykle ok. 50–120 Ω; z diodą / rezystorem – zależy od polaryzacji"},{label:"Załączony – spadek 30–87",val:"0.05",unit:"V",mode:"V⎓",note:"pod obciążeniem do ok. 0,1–0,2 V"},{label:"Sterowanie cewki 86–85",val:"12.3",unit:"V",mode:"V⎓",note:"przy wysterowaniu ≈ napięcie akumulatora"}],
+ tips:["Kliknięcie to nie dowód – zestyk może klikać i nie przewodzić prądu. Mierz spadek pod obciążeniem.","Przekaźnik z diodą: 86 = +, 85 = − – nie odwracaj.","Szybki test: zamień z identycznym przekaźnikiem z innego obwodu.","Luźne / przegrzane styki w gnieździe też dają spadek – oglądaj gniazdo."]},
+
+{id:"fuse",cat:"Zasilanie",name:"Bezpieczniki – sprawdzanie bez wyjmowania (spadek napięcia)",icon:"fuse",
+ pins:[{n:"A",f:"Punkt pomiarowy – strona zasilania",c:"zas"},{n:"B",f:"Punkt pomiarowy – strona odbiornika",c:"mot"}],
+ wave:{u:"mV",x:"spadek A–B: odbiornik wyłączony → włączony → wyłączony",y:[0,80],ticks:[0,20,40,60,80],m:[[.3,"ON"],[.75,"OFF"]],
+   s:[{f:nz(lerp([[0,0],[.3,0],[.32,46],[.75,45],[.77,0],[1,0]]),.6)}]},
+ meters:[{label:"Punkt A – masa",val:"12.4",unit:"V",mode:"V⎓",note:"to samo na A i B = bezpiecznik cały"},{label:"Spadek A–B (obwód pracuje)",val:"45",unit:"mV",mode:"V⎓",note:"0 mV = brak prądu; kilka–kilkadziesiąt mV = płynie prąd"},{label:"Wyjęty – rezystancja",val:"0.0",unit:"Ω",mode:"Ω",note:"ok. 0 Ω; OL = przepalony"}],
+ tips:["Prąd upływu bez rozpinania: po uśpieniu auta mierz mV na bezpiecznikach – obwód z wyraźnym spadkiem pobiera prąd. Przelicznik mV → mA dla rozmiaru i wartości bezpiecznika podają producenci.","Bezpiecznik przepala się znowu = zwarcie w obwodzie. <b>Nie wkładaj większego.</b>","Odbarwiony bezpiecznik albo nadtopione gniazdo = przegrzanie od złego styku.","Bazę bezpieczników aut znajdziesz pod przyciskiem 🔌 Bezpieczniki."]},
+
+{id:"masy",cat:"Zasilanie",name:"Masy i połączenia – spadek napięcia pod obciążeniem",icon:"masy",
+ pins:[{n:"−",f:"Biegun − akumulatora",c:"gnd"},{n:"S",f:"Blok silnika",c:"scr"},{n:"N",f:"Nadwozie / masa sterownika",c:"mot"}],
+ wave:{u:"V",x:"spadek minus akumulatora – blok silnika przy rozruchu",y:[0,.6],ticks:[0,.2,.4,.6],m:[[.3,"rozruch"],[.6,"jałowy"]],
+   s:[{f:nz(lerp([[0,0],[.3,0],[.32,.22],[.4,.16],[.58,.15],[.6,.03],[1,.03]]),.006)}]},
+ meters:[{label:"Rozruch: − aku → blok silnika",val:"0.15",unit:"V",mode:"V⎓",note:"do ok. 0,2–0,3 V"},{label:"Rozruch: + aku → rozrusznik (30)",val:"0.35",unit:"V",mode:"V⎓",note:"do ok. 0,5 V"},{label:"Pracuje: masa sterownika → − aku",val:"0.03",unit:"V",mode:"V⎓",note:"masy sterowników i czujników zwykle poniżej ok. 0,05–0,1 V"}],
+ tips:["Mierz <b>pod obciążeniem</b> (rozruch, światła, dmuchawa) – omomierz często pokazuje 0 Ω mimo złego połączenia.","Sondy kładź na biegunach akumulatora (ołów), nie na klemach – złapiesz też zły styk klemy.","Typowe miejsca: linka masowa silnik–nadwozie, masa pod akumulatorem, masy przy sterownikach i w nadkolach.","Zła masa = dziwne objawy: wiele błędów naraz, migające kontrolki, zakłamane czujniki."]}
+);
+Object.assign(PROBE,{adpompa:[["1","2"],["4","6"],null],adwtrysk:[["1","2"],["1","AKU−"],["1","KORPUS"]],adzbiornik:[["1","2"],null,null],lowfuel:[["3","1"],["2","1"],null],turbospeed:[["1","3"],["2","3"],["2","3"]],fan:[["+","−"],["S","−"],null],relay:[["86","85"],["30","87"],["86","85"]],fuse:[["A","AKU−"],["A","B"],["A","B"]],masy:[["S","−"],null,["N","−"]]});
+["adwtrysk","turbospeed","fan"].forEach(k=>PER.add(k));
+Object.assign(TEST,{
+adpompa:{s:["Test ciśnienia testerem – rośnie do zadanego i trzyma się.","Test dozowania (do menzurki, wg testera) – ilość zgodna z zadaną.","Zasilanie, masa i sterowanie silnika pompy.","Filtr pompy, szczelność przewodów (białe kryształy = wyciek)."],w:["nie buduje ciśnienia mimo dobrego zasilania, filtra i szczelnych przewodów","czujnik ciśnienia przy stojącej pompie pokazuje ≠ 0 bar"],n:["<b>zamarznięty płyn / niesprawne grzałki</b>","zapchany filtr pompy","nieszczelne przewody, zapchany wtrysk AdBlue","zły płyn (refraktometr)"]},
+adwtrysk:{s:["Rezystancja cewki i izolacja do korpusu.","Test dozowania (wymontowany, do menzurki): równa mgiełka, ilość zgodna z testerem.","Po teście wtrysk nie kapie.","Rura wydechowa / mieszalnik przy wtrysku – kryształy."],w:["przerwa / zwarcie cewki","nie otwiera albo kapie mimo czyszczenia","strumień zamiast mgiełki"],n:["<b>kryształy – czyszczenie wtrysku i mieszalnika</b>","ciśnienie z pompy (test ciśnienia)","wiązka / kostka, sterowanie"]},
+adzbiornik:{s:["Rezystancja grzałek (odpięte) i ich zasilanie w teście elementów.","Live data: temperatura AdBlue na zimnym aucie ≈ otoczenie.","Live data: poziom zgadza się z ilością płynu (dolej i obserwuj).","Bezpieczniki i przekaźnik grzałek."],w:["grzałka: przerwa (OL) albo zwarcie","czujnik temperatury / poziomu pokazuje bzdury mimo dobrej wiązki"],n:["bezpiecznik / przekaźnik grzałek","wiązka i kostka (korozja od płynu)","zły płyn, kryształy w zbiorniku"]},
+lowfuel:{s:["Live data: niskie ciśnienie zadane vs rzeczywiste, także przy obciążeniu.","Zasilanie 5 V, masa, sygnał.","Manometr – porównaj z czujnikiem.","Zasilanie i prąd pompy w baku, jej sterownik."],w:["czujnik pokazuje inaczej niż manometr","sygnał przerywa / skacze"],n:["filtr paliwa, pompa w baku, sterownik pompy","bezpiecznik / przekaźnik pompy","wiązka do baku (korozja)"]},
+turbospeed:{s:["Live data: obroty turbiny rosną płynnie z obciążeniem.","Zasilanie, masa i sygnał oscyloskopem.","Kostka i wiązka (temperatura, olej)."],w:["brak sygnału przy dobrym zasilaniu i masie","sygnał przerywa na ciepłym silniku"],n:["wiązka / kostka","olej w dolocie, uszkodzone łopatki sprężarki","sterowanie VNT"]},
+fan:{s:["Test elementów wykonawczych – wentylator rusza i zmienia obroty.","Zasilanie i masa pod obciążeniem.","Sygnał PWM z ECU (oscyloskop albo % w trybie Hz).","Prąd na cęgach – porównaj z mocą silnika."],w:["jest zasilanie, masa i sygnał, a brak obrotów","prąd dużo wyższy niż nominalny, łożysko"],n:["gruby bezpiecznik / przekaźnik","czujnik temperatury cieczy, ciśnienie klimatyzacji","wiązka, masa"]},
+relay:{s:["Rezystancja cewki.","Zasil cewkę i zmierz spadek 30–87 pod obciążeniem (np. żarówka).","W aucie: napięcie na 86 i masa na 85 przy wysterowaniu.","Gniazdo: luźne / przegrzane styki."],w:["cewka: przerwa","duży spadek na zestyku albo brak przewodzenia mimo kliknięcia"],n:["brak sterowania z ECU / włącznika","gniazdo i styki","bezpiecznik zasilania 30"]},
+fuse:{s:["Napięcie na obu punktach do masy.","Spadek A–B przy pracującym obwodzie.","Wyjęty: ok. 0 Ω.","Gniazdo: luz i ślady przegrzania."],w:["przerwa (OL)","przegrzany / odbarwiony","gniazdo z luzem lub nadtopione"],n:["<b>zwarcie w obwodzie – szukaj przyczyny</b>","zła wartość bezpiecznika","przekaźnik obwodu"]},
+masy:{s:["Spadek na masie przy rozruchu.","Spadek na plusie (aku → rozrusznik / alternator).","Masa sterownika: spadek do minusa aku przy pracującym silniku.","Oczyść, dokręć i zabezpiecz punkty masowe."],w:["linka masowa: spadek ponad normę po czyszczeniu końcówek","skorodowana / spuchnięta linka (korozja pod izolacją)"],n:["klemy i bieguny akumulatora","punkty masowe na nadwoziu","sam akumulator (test obciążeniowy)"]}
+});
+Object.assign(EN,{
+adpompa:{name:"AdBlue pump – SCR supply module with pressure sensor",pins:[["+12 V (relay / SCR control unit)"],["Pump ground"],["Pump motor control","PWM from ECU"],["5 V pressure sensor supply"],["Pressure signal"],["Sensor ground"]],x:"live data: AdBlue pressure – start, dosing, shutdown",
+ meters:[["Ignition – pump supply","battery voltage (when the SCR unit switches on)"],["Pressure sensor supply","4.9–5.1 V"],["Running – pressure (live data)","usually approx. 4.5–9 bar depending on system – steady, no drops"]],
+ tips:["In winter the pump builds pressure only after the fluid has thawed – check the heaters first.","The pump filter clogs with crystals – replace it with pressure faults.","After switch-off many systems purge the lines – the pump running after shutdown is normal.","Check fluid quality with a refractometer (approx. 32.5%) before diagnosing the pump.","Pin order differs (Bosch Denoxtronic, Continental, Delphi) – check the wiring diagram."],
+ test:{s:["Pressure test with a scan tool – rises to target and holds.","Dosing test (into a measuring cup, per scan tool) – quantity matches target.","Supply, ground and pump motor control.","Pump filter, line tightness (white crystals = leak)."],w:["doesn't build pressure despite good supply, filter and tight lines","pressure sensor reads ≠ 0 bar with the pump stopped"],n:["<b>frozen fluid / faulty heaters</b>","clogged pump filter","leaking lines, clogged AdBlue injector","bad fluid (refractometer)"]}},
+adwtrysk:{name:"AdBlue injector (dosing valve)",pins:[["Supply / control +"],["Control from ECU","ECU switches to ground"]],x:"pin 2 – opening pulses (dosing)",
+ meters:[["Unplugged – coil","usually approx. 10–15 Ω (Bosch) – check data for other types"],["Ignition – supply","on the supply pin when the SCR unit switches on"],["Insulation pin – body","no continuity to the body"]],
+ tips:["AdBlue crystals block the nozzle and grow in the exhaust pipe at the injector – inspect after removal.","Clean with warm (preferably demineralised) water, not with a wire – the nozzle is easily damaged.","Do the dosing test with the injector removed, into a measuring cup; gloves and goggles.","Some injectors have coolant passages – blocked = injector overheating."],
+ test:{s:["Coil resistance and insulation to the body.","Dosing test (removed, into a cup): even mist, quantity matches the tool.","No dripping after the test.","Exhaust pipe / mixer at the injector – crystals."],w:["open / short coil","doesn't open or drips despite cleaning","jet instead of mist"],n:["<b>crystals – clean injector and mixer</b>","pressure from the pump (pressure test)","wiring / connector, control"]}},
+adzbiornik:{name:"AdBlue tank – heaters, temperature and level sensor",pins:[["Heater +","via relay / SCR unit"],["Heater −"],["Temperature sensor (NTC)"],["Level sensor"],["Sensor ground"]],x:"live data: AdBlue temperature on a cold start (heaters on)",
+ meters:[["Tank heater (unplugged)","usually a few Ω depending on type – OL = open"],["Temp. sensor (live data, cold car)","≈ ambient temperature (± a few °C)"],["Level sensor (live data)","matches fluid quantity; stepped (several levels) or ultrasonic"]],
+ tips:["AdBlue freezes at approx. −11 °C – in winter the system first thaws the fluid (tank, pump, line).","Tank, pump and line heaters are often separate circuits – check each one, plus relay and fuse.","The in-tank module (pump + heater + sensors) is often replaced as a unit.","Newer cars have a CAN quality / level sensor – see the NOx / AdBlue CAN card.","Connectors corrode from the fluid – inspect pins before replacing the sensor."],
+ test:{s:["Heater resistance (unplugged) and their supply in the actuator test.","Live data: AdBlue temperature on a cold car ≈ ambient.","Live data: level matches the fluid quantity (top up and watch).","Heater fuses and relay."],w:["heater: open (OL) or short","temperature / level sensor reads nonsense despite good wiring"],n:["heater fuse / relay","wiring and connector (corrosion from fluid)","bad fluid, crystals in the tank"]}},
+lowfuel:{name:"Low fuel pressure sensor – direct-injection petrol (LPFP)",pins:[["Ground"],["Pressure signal"],["5 V supply"]],x:"live data: ignition (pump starts) → idle → load",
+ meters:[["Sensor supply","4.9–5.1 V"],["Idle – signal","depends on sensor range – convert with the calculator"],["Idle – live data","usually approx. 3–6 bar; actual ≈ target, also under load"]],
+ tips:["Low lift pressure also drops the high (rail) pressure – hesitation and low power under load. Start with the low side.","The in-tank pump is often PWM-driven by a separate pump control unit – check its supply and ground.","A gauge on the service port (if fitted) confirms the sensor reading.","Pin order depends on the sensor – find 5 V and ground with a meter."],
+ test:{s:["Live data: target vs actual low pressure, also under load.","5 V supply, ground, signal.","Gauge – compare with the sensor.","In-tank pump supply and current, its control unit."],w:["sensor reads differently from the gauge","signal drops out / jumps"],n:["fuel filter, in-tank pump, pump control unit","pump fuse / relay","wiring to the tank (corrosion)"]}},
+turbospeed:{name:"Turbocharger speed sensor",pins:[["Supply","5 V or 12 V"],["Signal"],["Ground"]],x:"square wave – frequency rises with turbo speed",
+ meters:[["Ignition – supply","or battery voltage – depending on the sensor"],["Ignition – signal (stopped)","steady approx. 0 or approx. 5 V"],["Driving – frequency","kHz at tens of thousands of turbo rpm – better a scope / live data"]],
+ tips:["Fitted only on some engines – check whether the car has one.","The sensor looks at the compressor blades through a narrow gap – take care when removing the intake.","Turbo speed drops with high target boost – check VNT control and leaks.","With only a sensor fault start with the wiring – it's hot near the turbo."],
+ test:{s:["Live data: turbo speed rises smoothly with load.","Supply, ground and signal with a scope.","Connector and wiring (heat, oil)."],w:["no signal with good supply and ground","signal drops out on a warm engine"],n:["wiring / connector","oil in the intake, damaged compressor blades","VNT control"]}},
+fan:{name:"Radiator fan – PWM module / relays",pins:[["+12 V (heavy fuse)"],["Ground"],["PWM signal from ECU"],["Ignition 15 supply / diagnostics","depending on car"]],x:"PWM control signal – duty = fan speed",
+ meters:[["Running – supply (+ / −)","under load total drop on + and − up to approx. 0.5 V"],["PWM signal – duty","rises with temperature / A/C pressure"],["Motor current – clamp","depends on power (e.g. 200–600 W ≈ 15–45 A)"]],
+ tips:["Quick test: scan tool actuator test or unplugged temperature sensor (the ECU usually runs the fan as a fail-safe).","⚠ The fan can start by itself with the ignition off – keep hands clear.","A PWM module usually has 2 thick wires (supply, ground) and 1–2 thin ones (signal, ignition 15).","Seized bearing: hard to turn by hand, high current, blown fuses.","Older cars: 2 speeds via relays and a resistor – check both speeds separately."],
+ test:{s:["Actuator test – the fan starts and changes speed.","Supply and ground under load.","PWM signal from the ECU (scope or % in Hz mode).","Clamp current – compare with motor power."],w:["supply, ground and signal present, but no rotation","current much higher than nominal, bearing"],n:["heavy fuse / relay","coolant temperature sensor, A/C pressure","wiring, ground"]}},
+relay:{name:"Automotive relay 4 / 5-pin (ISO)",pins:[["+12 V input"],["Coil −"],["Coil +","control"],["Output (normally open)"],["Output (normally closed)","5-pin only"]],x:"voltage at 87: coil off → energised → off",
+ meters:[["Coil 85–86 (removed)","usually approx. 50–120 Ω; with diode / resistor – depends on polarity"],["Energised – drop 30–87","under load up to approx. 0.1–0.2 V"],["Coil control 86–85","when energised ≈ battery voltage"]],
+ tips:["A click proves nothing – the contact can click and not carry current. Measure the drop under load.","Relay with a diode: 86 = +, 85 = − – don't reverse.","Quick test: swap with an identical relay from another circuit.","Loose / overheated socket terminals also cause a drop – inspect the socket."],
+ test:{s:["Coil resistance.","Power the coil and measure the 30–87 drop under load (e.g. a bulb).","In the car: voltage at 86 and ground at 85 when activated.","Socket: loose / overheated terminals."],w:["coil: open","large contact drop or no conduction despite clicking"],n:["no control from ECU / switch","socket and terminals","supply fuse on 30"]}},
+fuse:{name:"Fuses – checking without removal (voltage drop)",pins:[["Test point – supply side"],["Test point – load side"]],x:"A–B drop: load off → on → off",
+ meters:[["Point A – ground","same on A and B = fuse OK"],["A–B drop (circuit running)","0 mV = no current; a few to tens of mV = current flowing"],["Removed – resistance","approx. 0 Ω; OL = blown"]],
+ tips:["Parasitic drain without unplugging: after the car sleeps measure mV across fuses – the circuit with a clear drop is drawing current. Fuse makers publish mV → mA charts per fuse size and rating.","A fuse that blows again = short in the circuit. <b>Never fit a bigger one.</b>","A discoloured fuse or melted socket = overheating from a bad contact.","The vehicle fuse database is under the 🔌 Fuses button."],
+ test:{s:["Voltage at both test points to ground.","A–B drop with the circuit running.","Removed: approx. 0 Ω.","Socket: play and signs of overheating."],w:["open (OL)","overheated / discoloured","loose or melted socket"],n:["<b>short in the circuit – find the cause</b>","wrong fuse rating","circuit relay"]}},
+masy:{name:"Grounds and connections – voltage drop under load",pins:[["Battery − post"],["Engine block"],["Body / ECU ground"]],x:"battery minus – engine block drop while cranking",
+ meters:[["Cranking: battery − → engine block","up to approx. 0.2–0.3 V"],["Cranking: battery + → starter (30)","up to approx. 0.5 V"],["Running: ECU ground → battery −","ECU and sensor grounds usually below approx. 0.05–0.1 V"]],
+ tips:["Measure <b>under load</b> (cranking, lights, blower) – an ohmmeter often shows 0 Ω despite a bad connection.","Put the probes on the battery posts (lead), not on the clamps – you'll catch a bad clamp too.","Typical spots: engine–body ground strap, ground under the battery, grounds near ECUs and in wheel arches.","A bad ground = strange symptoms: many faults at once, flickering warning lights, false sensor readings."],
+ test:{s:["Ground drop while cranking.","Positive side drop (battery → starter / alternator).","ECU ground: drop to battery minus with engine running.","Clean, tighten and protect ground points."],w:["ground strap: drop above limit after cleaning the ends","corroded / swollen cable (corrosion under insulation)"],n:["battery clamps and posts","body ground points","the battery itself (load test)"]}}
+});
+
+// ---------- kalkulatory (plan rozwoju p. 7) ----------
+const NTC_T=[[-40,45313],[-30,26114],[-20,15462],[-10,9397],[0,5896],[10,3792],[20,2500],[30,1707],[40,1175],[50,834],[60,596],[70,436],[80,323],[90,243],[100,186],[110,144],[120,113],[130,89]];
+function ntcR(t){const a=NTC_T;if(t<=a[0][0])return a[0][1];for(let i=1;i<a.length;i++)if(t<=a[i][0]){const[t0,r0]=a[i-1],[t1,r1]=a[i];return Math.exp(Math.log(r0)+(Math.log(r1)-Math.log(r0))*(t-t0)/(t1-t0))}return a[a.length-1][1]}
+function ntcT(r){const a=NTC_T;if(r>=a[0][1])return a[0][0];for(let i=1;i<a.length;i++)if(r>=a[i][1]){const[t0,r0]=a[i-1],[t1,r1]=a[i];return t0+(t1-t0)*(Math.log(r)-Math.log(r0))/(Math.log(r1)-Math.log(r0))}return a[a.length-1][0]}
+const KPRE=[
+ {k:"rail18",n:["Rail – 0…1800 bar (Bosch RDS, przykład)","Rail – 0…1800 bar (Bosch RDS, example)"],v:[.5,0,4.5,1800],u:"bar"},
+ {k:"rail22",n:["Rail – 0…2200 bar (przykład)","Rail – 0…2200 bar (example)"],v:[.5,0,4.5,2200],u:"bar"},
+ {k:"map1",n:["MAP benzyna 1 bar (przykład)","Petrol MAP 1 bar (example)"],v:[.4,.15,4.65,1.15],u:"bar abs."},
+ {k:"tmap25",n:["Doładowanie T-MAP 2,5 bar (przykład)","Boost T-MAP 2.5 bar (example)"],v:[.4,.5,4.65,2.5],u:"bar abs."},
+ {k:"own",n:["Własne punkty (np. czujnik DPF)","Own points (e.g. DPF sensor)"],v:[.5,0,4.5,100],u:"kPa"}];
+let KSEL="rail18";
+const fx=(x,d)=>isFinite(x)?(+x.toFixed(d)).toLocaleString(lang==="en"?"en-GB":"pl-PL"):"–";
+const num=id=>parseFloat(String($(id).value).replace(",","."));
+function renderKalk(){
+ const e=lang==="en",p=KPRE.find(x=>x.k===KSEL)||KPRE[0];
+ $("kalkbody").innerHTML=`
+ <div class="kal"><h4>${T2("1. Napięcie ↔ ciśnienie (czujnik liniowy)","1. Voltage ↔ pressure (linear sensor)")}</h4>
+  <select id="kp_pre">${KPRE.map(x=>`<option value="${x.k}"${x.k===p.k?" selected":""}>${x.n[e?1:0]}</option>`).join("")}</select>
+  <div class="krow">${T2("Punkt 1","Point 1")}: <input id="kp_v1" value="${p.v[0]}"> V = <input id="kp_p1" value="${p.v[1]}"> &nbsp; ${T2("Punkt 2","Point 2")}: <input id="kp_v2" value="${p.v[2]}"> V = <input id="kp_p2" value="${p.v[3]}"> <input id="kp_u" value="${p.u}" style="width:70px"></div>
+  <div class="krow">${T2("Zmierzone napięcie","Measured voltage")}: <input id="kp_vin" value="1.5"> V → <b id="kp_out1" class="kres"></b></div>
+  <div class="krow">${T2("Ciśnienie","Pressure")}: <input id="kp_pin" value=""> → <b id="kp_out2" class="kres"></b></div>
+  <div class="kp">${T2("Charakterystyki są przykładowe – zawsze sprawdź dane konkretnego czujnika (dwa punkty z karty katalogowej).","Characteristics are examples – always check the data of the actual sensor (two points from its datasheet).")}</div></div>
+ <div class="kal"><h4>${T2("2. Temperatura ↔ rezystancja NTC","2. Temperature ↔ NTC resistance")}</h4>
+  <div class="krow">${T2("Temperatura","Temperature")}: <input id="kn_t" value="20"> °C → <b id="kn_o1" class="kres"></b></div>
+  <div class="krow">${T2("Rezystancja","Resistance")}: <input id="kn_r" value="323"> Ω → <b id="kn_o2" class="kres"></b></div>
+  <div class="kp">${T2("Wg tabeli Bosch NTC (2,5 kΩ przy 20 °C) – typowe czujniki temperatury cieczy i powietrza; inne czujniki mają inną tabelę.","Per Bosch NTC table (2.5 kΩ at 20 °C) – typical coolant and air temperature sensors; other sensors use a different table.")}</div></div>
+ <div class="kal"><h4>${T2("3. Spadek napięcia na przewodzie (miedź)","3. Voltage drop on a wire (copper)")}</h4>
+  <div class="krow">${T2("Prąd","Current")}: <input id="kd_i" value="20"> A &nbsp; ${T2("Długość","Length")}: <input id="kd_l" value="3"> m &nbsp; ${T2("Przekrój","Cross-section")}: <input id="kd_a" value="2.5"> mm² &nbsp; <label><input type="checkbox" id="kd_2"> ${T2("tam i z powrotem (bez masy na nadwoziu)","there and back (no body ground)")}</label></div>
+  <div class="krow">→ <b id="kd_o" class="kres"></b></div>
+  <div class="kp">${T2("Zasilanie odbiorników: spadek zwykle do ok. 3–5% (0,4–0,6 V przy 12 V); masy czujników i sterowników – jak najmniej.","Load supply: drop usually up to approx. 3–5% (0.4–0.6 V at 12 V); sensor and ECU grounds – as little as possible.")}</div></div>`;
+ calcKalk();
+}
+function calcKalk(){
+ const v1=num("kp_v1"),p1=num("kp_p1"),v2=num("kp_v2"),p2=num("kp_p2"),u=$("kp_u").value,vin=num("kp_vin"),pin=num("kp_pin");
+ const k=(p2-p1)/(v2-v1);
+ $("kp_out1").textContent=isFinite(vin)&&isFinite(k)?fx(p1+(vin-v1)*k,2)+" "+u:"–";
+ $("kp_out2").textContent=isFinite(pin)&&isFinite(k)&&k?fx(v1+(pin-p1)/k,2)+" V":"–";
+ const t=num("kn_t"),r=num("kn_r");
+ $("kn_o1").textContent=isFinite(t)?fx(ntcR(t),0)+" Ω":"–";
+ $("kn_o2").textContent=isFinite(r)&&r>0?fx(ntcT(r),1)+" °C":"–";
+ const I=num("kd_i"),Lm=num("kd_l"),A=num("kd_a"),two=$("kd_2").checked;
+ const R=.0175*Lm*(two?2:1)/A,dU=I*R;
+ $("kd_o").textContent=isFinite(dU)&&A>0?`${T2("spadek","drop")} ${fx(dU,2)} V (${fx(dU/12*100,1)}% ${T2("z","of")} 12 V) · ${T2("rezystancja przewodu","wire resistance")} ${fx(R*1000,1)} mΩ`+(dU/12>.05?" ⚠":" ✔"):"–";
+}
+document.addEventListener("input",e=>{if(e.target.closest&&e.target.closest("#kalkbody")&&e.target.id!=="kp_pre")calcKalk()});
+document.addEventListener("change",e=>{if(e.target.id==="kp_pre"){KSEL=e.target.value;renderKalk()}else if(e.target.id==="kd_2")calcKalk()});
+
 // ---------- język, interfejs, wyszukiwarka ----------
 let lang="pl";try{lang=localStorage.getItem("lang")||"pl"}catch(e){}
 const UI={
@@ -1385,6 +1580,7 @@ function renderAll(){
  $("sciezh").textContent=T2("Ścieżki diagnozy – krok po kroku","Diagnostic paths – step by step");
  $("bezpb").textContent=T2("🔌 Bezpieczniki","🔌 Fuses");$("bezph").textContent=T2("Bezpieczniki – wybierz auto","Fuses – choose a vehicle");$("ba").placeholder=T2("🔎 Wpisz auto, np. ducato 2.3, golf 7 tdi, sprinter","🔎 Type a vehicle, e.g. ducato 2.3, golf 7 tdi, sprinter");
  if($("bezp").style.display==="block")renderBezp();
+ $("kalkb").textContent=T2("🧮 Kalkulatory","🧮 Calculators");$("kalkh").textContent=T2("Kalkulatory warsztatowe","Workshop calculators");if($("kalk").style.display==="block")renderKalk();
  if($("kody").style.display==="block")renderKody();if($("sciez").style.display==="block")renderSciezki();
  $("chips").innerHTML=cats.map(c=>`<button class="chip" data-c="${c}">${c?CN(c):u.all}</button>`).join("");
  let html="";
@@ -1462,6 +1658,7 @@ function renderSciezki(){
 function toggle(id){const b=$(id);b.style.display=b.style.display==="none"?"block":"none";return b.style.display==="block"}
 $("kodyb").addEventListener("click",()=>{if(toggle("kody")){renderKody();$("kq").focus()}});
 $("sciezb").addEventListener("click",()=>{if(toggle("sciez"))renderSciezki()});
+$("kalkb").addEventListener("click",()=>{if(toggle("kalk"))renderKalk()});
 $("kq").addEventListener("input",renderKody);
 document.addEventListener("click",e=>{
  const g=e.target.closest(".gocard");if(g){goCard(g.dataset.go);return}
