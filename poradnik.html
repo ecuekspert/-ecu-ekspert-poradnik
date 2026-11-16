@@ -177,8 +177,9 @@ section.card.trafiony h2 mark.hl{background:#ff6d00;color:#fff}
 
 <script>
 // ---------- wersja i historia zmian (aktualizuj przy każdej zmianie) ----------
-const WERSJA="3.3 · 16.11.2026";
+const WERSJA="3.4 · 16.11.2026";
 const ZMIANY=[
+ ["3.4","Nowe karty diesla: świece żarowe i sterownik, turbina VNT (N75 / nastawnik), zawór MPROP / SCV, wtryskiwacze CR (przelewy, korekty), czujnik doładowania, klapa dolotu; 20 nowych kodów błędów","New diesel cards: glow plugs and control unit, VNT turbo (N75 / actuator), MPROP / SCV valve, CR injectors (back-leak, corrections), boost sensor, intake flap; 20 new fault codes"],
  ["3.3","Drobne poprawki i porządki w menu","Minor fixes and menu tidy-up"],
  ["3.2","Bezpieczniki: ok. 40 nowych aut – Toyota Avensis II/III, Corolla E12/E15, Auris I, Yaris II, RAV4 III; Nissan Micra K12, Note, Juke, X-Trail T32, Navara D23; Mitsubishi L200; Suzuki Swift, SX4, Grand Vitara; Kia Cee'd I, Sportage III; Hyundai i20, i30 I, ix35, Santa Fe II; Land Rover Discovery 3/4, Range Rover Sport, Freelander 2, Defender; Jeep Renegade, Fiat 500X, Sedici","Fuses: about 40 new vehicles – Toyota Avensis II/III, Corolla E12/E15, Auris I, Yaris II, RAV4 III; Nissan Micra K12, Note, Juke, X-Trail T32, Navara D23; Mitsubishi L200; Suzuki Swift, SX4, Grand Vitara; Kia Cee'd I, Sportage III; Hyundai i20, i30 I, ix35, Santa Fe II; Land Rover Discovery 3/4, Range Rover Sport, Freelander 2, Defender; Jeep Renegade, Fiat 500X, Sedici"],
  ["3.1","Bezpieczniki: ok. 60 nowych aut, w tym starsze generacje – Golf IV/V, Passat B5/B6, Octavia I, Fabia I/II, Polo 9N, Touran, Astra H, Zafira B, Meriva, Corsa C, Transit Mk6/Mk7, Mondeo Mk4, Fiesta Mk6, BMW E46/E60/E87/X5, Audi A3 8P/A4 B6-B7/A6 C6, Mercedes W203/W211/W169/ML, Vito W638, Megane II, Clio III, Peugeot 206/207/307/308, Jumpy/Expert/Scudo, Boxer/Jumper, Doblò I oraz nowsze: Octavia IV, Kodiaq, Karoq, Yeti, Captur","Fuses: about 60 new vehicles incl. older generations – Golf IV/V, Passat B5/B6, Octavia I, Fabia I/II, Polo 9N, Touran, Astra H, Zafira B, Meriva, Corsa C, Transit Mk6/Mk7, Mondeo Mk4, Fiesta Mk6, BMW E46/E60/E87/X5, Audi A3 8P/A4 B6-B7/A6 C6, Mercedes W203/W211/W169/ML, Vito W638, Megane II, Clio III, Peugeot 206/207/307/308, Jumpy/Expert/Scudo, Boxer/Jumper, Doblò I and newer: Octavia IV, Kodiaq, Karoq, Yeti, Captur"],
@@ -288,8 +289,15 @@ const sq=(lo,hi,n,duty,gap)=>t=>{const p=t*n%1, k=Math.floor(t*n); if(gap&&k%gap
 // [kod, karta, opis PL, opis EN, najczęstsze przyczyny PL, EN]
 const KODY=[
 ["P0016","hall","Korelacja wał korbowy / wałek rozrządu (bank 1, czujnik A)","Crankshaft / camshaft position correlation (bank 1, sensor A)","rozciągnięty łańcuch / przeskoczony pasek, koło fazy, czujnik CKP / CMP","stretched chain / jumped belt, cam phaser, CKP / CMP sensor"],
+["P0045","vnt","Sterowanie doładowaniem A – obwód / przerwa","Turbo boost control A – circuit / open","zawór N75 / nastawnik elektryczny, wiązka, kostka","N75 valve / electric actuator, wiring, connector"],
+["P0046","vnt","Sterowanie doładowaniem A – zakres / wiarygodność","Turbo boost control A – range / performance","zacięta kierownica VNT, nastawnik, podciśnienie","sticking VNT vanes, actuator, vacuum"],
+["P0047","vnt","Sterowanie doładowaniem A – sygnał za niski","Turbo boost control A – circuit low","zwarcie do masy, zawór N75 / nastawnik","short to ground, N75 valve / actuator"],
+["P0048","vnt","Sterowanie doładowaniem A – sygnał za wysoki","Turbo boost control A – circuit high","zwarcie do plusa, przerwa, zawór N75 / nastawnik","short to positive, open circuit, N75 valve / actuator"],
 ["P0087","rail","Ciśnienie paliwa w listwie za niskie","Fuel rail / system pressure too low","filtr paliwa, pompa wstępna, powietrze, przelewy wtrysków, MPROP / SCV","fuel filter, lift pump, air, injector back-leak, MPROP / SCV"],
 ["P0088","rail","Ciśnienie paliwa w listwie za wysokie","Fuel rail / system pressure too high","zawór regulacyjny DRV / MPROP, czujnik ciśnienia rail, wiązka","DRV / MPROP regulating valve, rail pressure sensor, wiring"],
+["P0090","mprop","Regulator ciśnienia paliwa 1 – obwód sterowania","Fuel pressure regulator 1 – control circuit","zawór MPROP / SCV, wiązka, zasilanie 12 V","MPROP / SCV valve, wiring, 12 V supply"],
+["P0091","mprop","Regulator ciśnienia paliwa 1 – sygnał za niski","Fuel pressure regulator 1 – control circuit low","zwarcie do masy, zawór MPROP / SCV","short to ground, MPROP / SCV valve"],
+["P0092","mprop","Regulator ciśnienia paliwa 1 – sygnał za wysoki","Fuel pressure regulator 1 – control circuit high","przerwa, zwarcie do plusa, zawór MPROP / SCV","open circuit, short to positive, MPROP / SCV valve"],
 ["P0100","maf","Przepływomierz – obwód","Mass air flow – circuit","wiązka, kostka, zasilanie 12 V / 5 V, przepływomierz","wiring, connector, 12 V / 5 V supply, MAF"],
 ["P0101","maf","Przepływomierz – zakres / wiarygodność","Mass air flow – range / performance","nieszczelność za MAF, EGR otwarty, brudny MAF, filtr powietrza","leak after MAF, EGR stuck open, dirty MAF, air filter"],
 ["P0102","maf","Przepływomierz – sygnał za niski","Mass air flow – low input","przerwa w sygnale, brak zasilania, masa, MAF","open signal wire, no supply, ground, MAF"],
@@ -305,19 +313,11 @@ const KODY=[
 ["P0116","ntc","Czujnik ECT – zakres / wiarygodność","ECT sensor – range / performance","termostat, czujnik pływa, powietrze w układzie","thermostat, drifting sensor, air in system"],
 ["P0117","ntc","Czujnik ECT – sygnał za niski (za gorąco)","ECT sensor – low input (reads hot)","zwarcie do masy, czujnik","short to ground, sensor"],
 ["P0118","ntc","Czujnik ECT – sygnał za wysoki (za zimno)","ECT sensor – high input (reads cold)","przerwa, kostka, czujnik","open circuit, connector, sensor"],
-["P0128","ntc","Temperatura cieczy poniżej temperatury termostatu","Coolant temperature below thermostat regulating temperature","termostat otwarty na stałe, czujnik ECT","thermostat stuck open, ECT sensor"],
 ["P0120","tps","Czujnik położenia przepustnicy / pedału A – obwód","Throttle / pedal position sensor A – circuit","wiązka, 5 V, czujnik","wiring, 5 V, sensor"],
 ["P0121","tps","Czujnik położenia przepustnicy A – zakres / wiarygodność","Throttle position sensor A – range / performance","wytarta ścieżka, brud, brak adaptacji","worn track, dirt, no adaptation"],
 ["P0122","tps","Czujnik położenia przepustnicy A – sygnał za niski","Throttle position sensor A – low input","przerwa / zwarcie do masy, brak 5 V","open / short to ground, no 5 V"],
 ["P0123","tps","Czujnik położenia przepustnicy A – sygnał za wysoki","Throttle position sensor A – high input","zwarcie do 5 V, brak masy","short to 5 V, missing ground"],
-["P2101","etb","Silnik przepustnicy – zakres / wiarygodność","Throttle actuator control motor – range / performance","brud, zacięcie, silnik, wiązka, niskie napięcie","dirt, sticking, motor, wiring, low voltage"],
-["P2119","etb","Przepustnica – zakres / wiarygodność korpusu","Throttle actuator control – throttle body range / performance","zacięta przepustnica, sprężyna, brak adaptacji","sticking throttle, spring, no adaptation"],
-["P2135","etb","Korelacja ścieżek czujnika przepustnicy A / B","Throttle position sensor A / B correlation","ścieżka czujnika, wiązka, kostka","sensor track, wiring, connector"],
-["P2122","app","Czujnik pedału gazu D – sygnał za niski","Accelerator pedal position sensor D – low input","wiązka przy pedale, 5 V, czujnik","harness at pedal, 5 V, sensor"],
-["P2123","app","Czujnik pedału gazu D – sygnał za wysoki","Accelerator pedal position sensor D – high input","zwarcie do 5 V, brak masy","short to 5 V, missing ground"],
-["P2127","app","Czujnik pedału gazu E – sygnał za niski","Accelerator pedal position sensor E – low input","wiązka, 5 V, czujnik","wiring, 5 V, sensor"],
-["P2128","app","Czujnik pedału gazu E – sygnał za wysoki","Accelerator pedal position sensor E – high input","zwarcie do 5 V, brak masy","short to 5 V, missing ground"],
-["P2138","app","Korelacja ścieżek pedału gazu D / E","Accelerator pedal position D / E correlation","ścieżka czujnika, wiązka, wspólne 5 V","sensor track, wiring, shared 5 V"],
+["P0128","ntc","Temperatura cieczy poniżej temperatury termostatu","Coolant temperature below thermostat regulating temperature","termostat otwarty na stałe, czujnik ECT","thermostat stuck open, ECT sensor"],
 ["P0130","lambda","Sonda lambda B1S1 – obwód","O2 sensor B1S1 – circuit","wiązka, kostka, sonda","wiring, connector, sensor"],
 ["P0131","lambda","Sonda lambda B1S1 – napięcie za niskie","O2 sensor B1S1 – low voltage","nieszczelny wydech, mieszanka uboga, sonda","exhaust leak, lean mixture, sensor"],
 ["P0132","lambda","Sonda lambda B1S1 – napięcie za wysokie","O2 sensor B1S1 – high voltage","zwarcie do +, mieszanka bogata, sonda","short to +, rich mixture, sensor"],
@@ -326,8 +326,6 @@ const KODY=[
 ["P0135","lambda","Grzałka sondy B1S1 – obwód","O2 sensor heater B1S1 – circuit","przerwana grzałka, bezpiecznik, wiązka","open heater, fuse, wiring"],
 ["P0136","lambda","Sonda lambda B1S2 (za katem) – obwód","O2 sensor B1S2 (post-cat) – circuit","wiązka, kostka, sonda","wiring, connector, sensor"],
 ["P0141","lambda","Grzałka sondy B1S2 – obwód","O2 sensor heater B1S2 – circuit","przerwana grzałka, bezpiecznik, wiązka","open heater, fuse, wiring"],
-["P2195","lsu","Sonda B1S1 – sygnał zablokowany na ubogiej","O2 sensor B1S1 – signal stuck lean","nieszczelność dolotu / wydechu, ciśnienie paliwa, sonda","intake / exhaust leak, fuel pressure, sensor"],
-["P2196","lsu","Sonda B1S1 – sygnał zablokowany na bogatej","O2 sensor B1S1 – signal stuck rich","wtryskiwacz leje, ciśnienie paliwa, sonda","leaking injector, fuel pressure, sensor"],
 ["P0171","lambda","Mieszanka za uboga (bank 1)","System too lean (bank 1)","nieszczelność dolotu, MAF, ciśnienie paliwa, wtryski","intake leak, MAF, fuel pressure, injectors"],
 ["P0172","lambda","Mieszanka za bogata (bank 1)","System too rich (bank 1)","wtryski, ciśnienie paliwa, MAF, czujnik ECT","injectors, fuel pressure, MAF, ECT sensor"],
 ["P0190","rail","Czujnik ciśnienia paliwa w listwie – obwód","Fuel rail pressure sensor – circuit","wiązka, 5 V, czujnik","wiring, 5 V, sensor"],
@@ -338,8 +336,19 @@ const KODY=[
 ["P0202","inj","Wtryskiwacz cyl. 2 – obwód","Injector cylinder 2 – circuit","wiązka, kostka, cewka wtryskiwacza, sterownik","wiring, connector, injector coil, ECU driver"],
 ["P0203","inj","Wtryskiwacz cyl. 3 – obwód","Injector cylinder 3 – circuit","wiązka, kostka, cewka wtryskiwacza, sterownik","wiring, connector, injector coil, ECU driver"],
 ["P0204","inj","Wtryskiwacz cyl. 4 – obwód","Injector cylinder 4 – circuit","wiązka, kostka, cewka wtryskiwacza, sterownik","wiring, connector, injector coil, ECU driver"],
-["P0234","map","Nadmierne doładowanie turbiny","Turbocharger overboost","zacięta kierownica VNT, zawór N75 / nastawnik, czujnik MAP","stuck VNT vanes, N75 valve / actuator, MAP sensor"],
-["P0299","map","Za niskie doładowanie turbiny","Turbocharger underboost","nieszczelny dolot / intercooler, VNT, N75 / nastawnik, podciśnienie","intake / intercooler leak, VNT, N75 / actuator, vacuum"],
+["P0234","vnt","Nadmierne doładowanie turbiny","Turbocharger overboost","zacięta kierownica VNT, zawór N75 / nastawnik, czujnik MAP","stuck VNT vanes, N75 valve / actuator, MAP sensor"],
+["P0235","boost","Czujnik doładowania A – obwód","Turbo boost sensor A – circuit","wiązka, kostka, zasilanie 5 V, czujnik","wiring, connector, 5 V supply, sensor"],
+["P0236","boost","Czujnik doładowania A – zakres / wiarygodność","Turbo boost sensor A – range / performance","olej w czujniku, nieszczelność, porównaj z baro","oil in the sensor, leak, compare with baro"],
+["P0237","boost","Czujnik doładowania A – sygnał za niski","Turbo boost sensor A – low","przerwa w sygnale, brak 5 V, czujnik","open signal wire, no 5 V, sensor"],
+["P0238","boost","Czujnik doładowania A – sygnał za wysoki","Turbo boost sensor A – high","zwarcie do 5 V, brak masy, czujnik","short to 5 V, missing ground, sensor"],
+["P0251","mprop","Pompa wtryskowa – sterowanie dawką A","Injection pump fuel metering control A","zawór dozujący MPROP / SCV, wiązka, pompa","MPROP / SCV metering valve, wiring, pump"],
+["P0263","injcr","Cylinder 1 – udział / balans","Cylinder 1 contribution / balance","wtryskiwacz (przelew, korekta), kompresja","injector (back-leak, correction), compression"],
+["P0266","injcr","Cylinder 2 – udział / balans","Cylinder 2 contribution / balance","wtryskiwacz (przelew, korekta), kompresja","injector (back-leak, correction), compression"],
+["P0269","injcr","Cylinder 3 – udział / balans","Cylinder 3 contribution / balance","wtryskiwacz (przelew, korekta), kompresja","injector (back-leak, correction), compression"],
+["P0272","injcr","Cylinder 4 – udział / balans","Cylinder 4 contribution / balance","wtryskiwacz (przelew, korekta), kompresja","injector (back-leak, correction), compression"],
+["P0299","vnt","Za niskie doładowanie turbiny","Turbocharger underboost","nieszczelny dolot / intercooler, VNT, N75 / nastawnik, podciśnienie","intake / intercooler leak, VNT, N75 / actuator, vacuum"],
+["P02E0","klapa","Klapa dolotu diesla – obwód / przerwa","Diesel intake air flow control – circuit / open","silnik klapy, wiązka, kostka","flap motor, wiring, connector"],
+["P02E1","klapa","Klapa dolotu diesla – wiarygodność","Diesel intake air flow control – performance","nagar, zacięcie, adaptacja","carbon, sticking, adaptation"],
 ["P0300","coil","Wykryto wypadanie zapłonu – losowe / kilka cylindrów","Random / multiple cylinder misfire","świece, cewki, wtryski, nieszczelność, ciśnienie paliwa","spark plugs, coils, injectors, air leak, fuel pressure"],
 ["P0301","coil","Wypadanie zapłonu cyl. 1","Cylinder 1 misfire","świeca, cewka, wtryskiwacz, kompresja (zamiana – czy błąd idzie)","spark plug, coil, injector, compression (swap test)"],
 ["P0302","coil","Wypadanie zapłonu cyl. 2","Cylinder 2 misfire","świeca, cewka, wtryskiwacz, kompresja (zamiana – czy błąd idzie)","spark plug, coil, injector, compression (swap test)"],
@@ -356,12 +365,7 @@ const KODY=[
 ["P0352","coil","Cewka zapłonowa B – obwód","Ignition coil B – circuit","zasilanie / masa cewki, sterowanie z ECU, cewka","coil supply / ground, ECU control, coil"],
 ["P0353","coil","Cewka zapłonowa C – obwód","Ignition coil C – circuit","zasilanie / masa cewki, sterowanie z ECU, cewka","coil supply / ground, ECU control, coil"],
 ["P0354","coil","Cewka zapłonowa D – obwód","Ignition coil D – circuit","zasilanie / masa cewki, sterowanie z ECU, cewka","coil supply / ground, ECU control, coil"],
-["P0380","","Świece żarowe / grzałka A – obwód","Glow plug / heater circuit A","świece, sterownik świec, bezpiecznik, wiązka","glow plugs, glow plug module, fuse, wiring"],
-["P0670","","Sterownik świec żarowych – obwód sterowania","Glow plug control module – control circuit","sterownik świec, wiązka, zasilanie","glow plug module, wiring, supply"],
-["P0671","","Świeca żarowa cyl. 1 – obwód","Cylinder 1 glow plug – circuit","świeca, przewód, sterownik świec","glow plug, wire, glow plug module"],
-["P0672","","Świeca żarowa cyl. 2 – obwód","Cylinder 2 glow plug – circuit","świeca, przewód, sterownik świec","glow plug, wire, glow plug module"],
-["P0673","","Świeca żarowa cyl. 3 – obwód","Cylinder 3 glow plug – circuit","świeca, przewód, sterownik świec","glow plug, wire, glow plug module"],
-["P0674","","Świeca żarowa cyl. 4 – obwód","Cylinder 4 glow plug – circuit","świeca, przewód, sterownik świec","glow plug, wire, glow plug module"],
+["P0380","glow","Świece żarowe / grzałka A – obwód","Glow plug / heater circuit A","świece, sterownik świec, bezpiecznik, wiązka","glow plugs, glow plug module, fuse, wiring"],
 ["P0400","egr","Recyrkulacja spalin – przepływ","Exhaust gas recirculation – flow","EGR zapchany / zacięty, chłodnica EGR, sterowanie","EGR clogged / stuck, EGR cooler, control"],
 ["P0401","egr","EGR – za mały przepływ","EGR – insufficient flow","nagar w zaworze / kanałach, zacięty zawór, podciśnienie","carbon in valve / passages, stuck valve, vacuum"],
 ["P0402","egr","EGR – za duży przepływ","EGR – excessive flow","zawór nie domyka, nagar na talerzyku, sterowanie","valve not closing, carbon on disc, control"],
@@ -369,6 +373,8 @@ const KODY=[
 ["P0404","egr","EGR – zakres / wiarygodność","EGR – range / performance","zacięcie, nagar, czujnik położenia, adaptacja","sticking, carbon, position sensor, adaptation"],
 ["P0405","egr","Czujnik położenia EGR A – sygnał za niski","EGR sensor A – low input","przerwa / zwarcie do masy, brak 5 V","open / short to ground, no 5 V"],
 ["P0406","egr","Czujnik położenia EGR A – sygnał za wysoki","EGR sensor A – high input","zwarcie do 5 V, brak masy","short to 5 V, missing ground"],
+["P0487","klapa","Klapa dolotu (EGR throttle) – obwód sterowania","EGR throttle position – control circuit","silnik klapy, wiązka, kostka","flap motor, wiring, connector"],
+["P0488","klapa","Klapa dolotu (EGR throttle) – zakres / wiarygodność","EGR throttle position – range / performance","nagar, zacięcie, czujnik położenia, adaptacja","carbon, sticking, position sensor, adaptation"],
 ["P0520","oil","Czujnik / włącznik ciśnienia oleju – obwód","Oil pressure sensor / switch – circuit","wiązka, kostka, czujnik","wiring, connector, sensor"],
 ["P0521","oil","Czujnik ciśnienia oleju – zakres / wiarygodność","Oil pressure sensor – range / performance","realne ciśnienie (manometr!), czujnik, olej","real pressure (gauge!), sensor, oil"],
 ["P0522","oil","Czujnik ciśnienia oleju – sygnał za niski","Oil pressure sensor – low input","niskie ciśnienie, zwarcie do masy, czujnik","low pressure, short to ground, sensor"],
@@ -378,20 +384,35 @@ const KODY=[
 ["P0546","egt","Czujnik EGT B1S1 – sygnał za wysoki","EGT sensor B1S1 – high input","przerwa, czujnik","open circuit, sensor"],
 ["P0562","aku","Napięcie instalacji za niskie","System voltage low","akumulator, alternator, pasek, masy, klemy","battery, alternator, belt, grounds, clamps"],
 ["P0563","aku","Napięcie instalacji za wysokie","System voltage high","regulator alternatora, czujnik IBS, masa","alternator regulator, IBS sensor, ground"],
+["P0670","glow","Sterownik świec żarowych – obwód sterowania","Glow plug control module – control circuit","sterownik świec, wiązka, zasilanie","glow plug module, wiring, supply"],
+["P0671","glow","Świeca żarowa cyl. 1 – obwód","Cylinder 1 glow plug – circuit","świeca, przewód, sterownik świec","glow plug, wire, glow plug module"],
+["P0672","glow","Świeca żarowa cyl. 2 – obwód","Cylinder 2 glow plug – circuit","świeca, przewód, sterownik świec","glow plug, wire, glow plug module"],
+["P0673","glow","Świeca żarowa cyl. 3 – obwód","Cylinder 3 glow plug – circuit","świeca, przewód, sterownik świec","glow plug, wire, glow plug module"],
+["P0674","glow","Świeca żarowa cyl. 4 – obwód","Cylinder 4 glow plug – circuit","świeca, przewód, sterownik świec","glow plug, wire, glow plug module"],
 ["P2002","dpf-filtr","Sprawność filtra DPF poniżej progu (bank 1)","DPF efficiency below threshold (bank 1)","pęknięty / wydmuchany DPF, czujnik różnicy ciśnień","cracked / gutted DPF, differential pressure sensor"],
-["P2463","dpf-filtr","Filtr DPF – nagromadzenie sadzy","DPF – soot accumulation","przerwane regeneracje, EGR, wtryski, MAF, krótkie trasy","interrupted regenerations, EGR, injectors, MAF, short trips"],
+["P203F","can","Poziom AdBlue za niski","Reductant level too low","brak płynu, czujnik poziomu","no fluid, level sensor"],
+["P2047","can","Wtryskiwacz AdBlue – obwód / przerwa","Reductant injector – circuit / open","wiązka, wtryskiwacz AdBlue","wiring, AdBlue injector"],
+["P204F","can","Układ AdBlue – sprawność","Reductant system performance","pompa, filtr, wtrysk AdBlue, przewody, jakość płynu","pump, filter, AdBlue injector, lines, fluid quality"],
+["P207F","can","Jakość AdBlue – nieprawidłowa","Reductant quality performance","zły / rozcieńczony płyn (refraktometr 32,5%), czujnik jakości","bad / diluted fluid (refractometer 32.5%), quality sensor"],
+["P20E8","can","Ciśnienie AdBlue za niskie","Reductant pressure too low","pompa, filtr pompy, nieszczelne przewody, zamarznięty płyn","pump, pump filter, leaking lines, frozen fluid"],
+["P20EE","can","Sprawność katalizatora SCR poniżej progu (bank 1)","SCR NOx catalyst efficiency below threshold (bank 1)","jakość AdBlue, wtrysk AdBlue, czujnik NOx, katalizator","AdBlue quality, AdBlue injector, NOx sensor, catalyst"],
+["P2101","etb","Silnik przepustnicy – zakres / wiarygodność","Throttle actuator control motor – range / performance","brud, zacięcie, silnik, wiązka, niskie napięcie","dirt, sticking, motor, wiring, low voltage"],
+["P2119","etb","Przepustnica – zakres / wiarygodność korpusu","Throttle actuator control – throttle body range / performance","zacięta przepustnica, sprężyna, brak adaptacji","sticking throttle, spring, no adaptation"],
+["P2122","app","Czujnik pedału gazu D – sygnał za niski","Accelerator pedal position sensor D – low input","wiązka przy pedale, 5 V, czujnik","harness at pedal, 5 V, sensor"],
+["P2123","app","Czujnik pedału gazu D – sygnał za wysoki","Accelerator pedal position sensor D – high input","zwarcie do 5 V, brak masy","short to 5 V, missing ground"],
+["P2127","app","Czujnik pedału gazu E – sygnał za niski","Accelerator pedal position sensor E – low input","wiązka, 5 V, czujnik","wiring, 5 V, sensor"],
+["P2128","app","Czujnik pedału gazu E – sygnał za wysoki","Accelerator pedal position sensor E – high input","zwarcie do 5 V, brak masy","short to 5 V, missing ground"],
+["P2135","etb","Korelacja ścieżek czujnika przepustnicy A / B","Throttle position sensor A / B correlation","ścieżka czujnika, wiązka, kostka","sensor track, wiring, connector"],
+["P2138","app","Korelacja ścieżek pedału gazu D / E","Accelerator pedal position D / E correlation","ścieżka czujnika, wiązka, wspólne 5 V","sensor track, wiring, shared 5 V"],
+["P2195","lsu","Sonda B1S1 – sygnał zablokowany na ubogiej","O2 sensor B1S1 – signal stuck lean","nieszczelność dolotu / wydechu, ciśnienie paliwa, sonda","intake / exhaust leak, fuel pressure, sensor"],
+["P2196","lsu","Sonda B1S1 – sygnał zablokowany na bogatej","O2 sensor B1S1 – signal stuck rich","wtryskiwacz leje, ciśnienie paliwa, sonda","leaking injector, fuel pressure, sensor"],
+["P2200","can","Czujnik NOx (bank 1) – obwód","NOx sensor (bank 1) – circuit","zasilanie, CAN, czujnik NOx","supply, CAN, NOx sensor"],
 ["P242F","dpf-filtr","Filtr DPF – zatkanie popiołem","DPF restriction – ash accumulation","popiół na limicie – czyszczenie / wymiana, zużycie oleju","ash at limit – cleaning / replacement, oil consumption"],
 ["P2452","dpf","Czujnik różnicy ciśnień DPF A – obwód","DPF pressure sensor A – circuit","wiązka, 5 V, czujnik","wiring, 5 V, sensor"],
 ["P2453","dpf","Czujnik różnicy ciśnień DPF A – zakres / wiarygodność","DPF pressure sensor A – range / performance","wężyki zapchane / zamienione / pęknięte, czujnik, adaptacja","hoses clogged / swapped / cracked, sensor, adaptation"],
 ["P2454","dpf","Czujnik różnicy ciśnień DPF A – sygnał za niski","DPF pressure sensor A – low input","przerwa / zwarcie do masy, brak 5 V","open / short to ground, no 5 V"],
 ["P2455","dpf","Czujnik różnicy ciśnień DPF A – sygnał za wysoki","DPF pressure sensor A – high input","zwarcie do 5 V, brak masy, zapchany DPF","short to 5 V, missing ground, clogged DPF"],
-["P2200","can","Czujnik NOx (bank 1) – obwód","NOx sensor (bank 1) – circuit","zasilanie, CAN, czujnik NOx","supply, CAN, NOx sensor"],
-["P20EE","can","Sprawność katalizatora SCR poniżej progu (bank 1)","SCR NOx catalyst efficiency below threshold (bank 1)","jakość AdBlue, wtrysk AdBlue, czujnik NOx, katalizator","AdBlue quality, AdBlue injector, NOx sensor, catalyst"],
-["P203F","can","Poziom AdBlue za niski","Reductant level too low","brak płynu, czujnik poziomu","no fluid, level sensor"],
-["P204F","can","Układ AdBlue – sprawność","Reductant system performance","pompa, filtr, wtrysk AdBlue, przewody, jakość płynu","pump, filter, AdBlue injector, lines, fluid quality"],
-["P207F","can","Jakość AdBlue – nieprawidłowa","Reductant quality performance","zły / rozcieńczony płyn (refraktometr 32,5%), czujnik jakości","bad / diluted fluid (refractometer 32.5%), quality sensor"],
-["P20E8","can","Ciśnienie AdBlue za niskie","Reductant pressure too low","pompa, filtr pompy, nieszczelne przewody, zamarznięty płyn","pump, pump filter, leaking lines, frozen fluid"],
-["P2047","can","Wtryskiwacz AdBlue – obwód / przerwa","Reductant injector – circuit / open","wiązka, wtryskiwacz AdBlue","wiring, AdBlue injector"],
+["P2463","dpf-filtr","Filtr DPF – nagromadzenie sadzy","DPF – soot accumulation","przerwane regeneracje, EGR, wtryski, MAF, krótkie trasy","interrupted regenerations, EGR, injectors, MAF, short trips"],
 ["U0001","can","Magistrala CAN (high speed) – komunikacja","High speed CAN bus – communication","zwarcie / przerwa H / L, uszkodzony moduł, terminatory","H / L short / open, faulty module, terminators"],
 ["U0100","can","Brak komunikacji ze sterownikiem silnika","Lost communication with ECM / PCM","zasilanie / masa ECU, CAN, bezpiecznik","ECU supply / ground, CAN, fuse"],
 ["U0101","can","Brak komunikacji ze sterownikiem skrzyni","Lost communication with TCM","zasilanie / masa TCM, CAN","TCM supply / ground, CAN"],
@@ -407,7 +428,7 @@ moc:{t:["Brak mocy / tryb awaryjny (diesel)","Low power / limp mode (diesel)"],s
  a2:{q:["Doładowanie rzeczywiste dochodzi do zadanego (przyspieszanie na 3. biegu, live data)?","Does actual boost reach target (accelerating in 3rd gear, live data)?"],y:"a3",n:"a2b"},
  a2b:{q:["Słychać syk albo jest olej / pęknięcie na wężach intercoolera?","Hissing sound or oil / cracks on intercooler hoses?"],y:"a2r1",n:"a2r2"},
  a2r1:{r:["Nieszczelność dolotu – napraw węże / intercooler, potem sprawdź doładowanie jeszcze raz.","Intake leak – repair hoses / intercooler, then check boost again."],c:"map"},
- a2r2:{r:["Sprawdź sterowanie turbiny (zawór N75 / nastawnik elektryczny, podciśnienie), ruch kierownicy VNT i czujnik MAP (na zapłonie = baro).","Check turbo control (N75 valve / electric actuator, vacuum), VNT vane movement and the MAP sensor (ignition ON = baro)."],c:"map"},
+ a2r2:{r:["Sprawdź sterowanie turbiny (zawór N75 / nastawnik elektryczny, podciśnienie), ruch kierownicy VNT i czujnik MAP (na zapłonie = baro).","Check turbo control (N75 valve / electric actuator, vacuum), VNT vane movement and the MAP sensor (ignition ON = baro)."],c:"vnt"},
  a3:{q:["Przepływ MAF rzeczywisty jest zbliżony do zadanego?","Is actual MAF air flow close to target?"],y:"a4",n:"a3r"},
  a3r:{r:["MAF zaniża albo EGR nie domyka – zrób test odpięcia MAF i test EGR przez MAF.","MAF reads low or EGR doesn't close – do the MAF unplug test and the EGR test via MAF."],c:"maf"},
  a4:{q:["Ciśnienie paliwa rzeczywiste nadąża za zadanym pod obciążeniem?","Does actual fuel pressure follow target under load?"],y:"a5",n:"a4r"},
@@ -425,7 +446,7 @@ start:{t:["Silnik kręci, ale nie odpala","Engine cranks but won't start"],start
  b3r:{r:["Brak ciśnienia: paliwo / powietrze w filtrze, pompa wstępna, przelewy wtrysków, MPROP / SCV, czujnik ciśnienia (zapłon = 0,5 V).","No pressure: fuel / air in filter, lift pump, injector back-leak, MPROP / SCV, pressure sensor (ignition = 0.5 V)."],c:"rail"},
  b4:{q:["Świece żarowe działają (zimny silnik) i immobilizer jest odblokowany?","Do glow plugs work (cold engine) and is the immobiliser unlocked?"],y:"b4r1",n:"b4r2"},
  b4r1:{r:["Sprawdź wtryskiwacze (przelewy, sterowanie), kompresję i korelację CKP / CMP.","Check injectors (back-leak, control), compression and CKP / CMP correlation."],c:"hall"},
- b4r2:{r:["Świece / sterownik świec albo blokada immobilizera – sprawdź błędy immo i rezystancję świec.","Glow plugs / glow plug module or immobiliser lock – check immo faults and glow plug resistance."]},
+ b4r2:{r:["Świece / sterownik świec albo blokada immobilizera – sprawdź błędy immo i rezystancję świec.","Glow plugs / glow plug module or immobiliser lock – check immo faults and glow plug resistance."],c:"glow"},
  b5:{q:["Jest iskra / sterowanie cewek (oscyloskop)?","Is there spark / coil control (scope)?"],y:"b6",n:"b5r"},
  b5r:{r:["Sprawdź zasilanie i masę cewek, sterowanie z ECU oraz czujniki CKP / CMP.","Check coil supply and ground, ECU control and CKP / CMP sensors."],c:"coil"},
  b6:{q:["Wtryskiwacze dostają impulsy i jest ciśnienie paliwa?","Do injectors get pulses and is there fuel pressure?"],y:"b6r1",n:"b6r2"},
@@ -462,12 +483,12 @@ dym:{t:["Dym z wydechu","Exhaust smoke"],start:"e1",n:{
  e2r:{r:["Za mało powietrza: nieszczelny dolot, turbina, MAF albo otwarty EGR.","Too little air: intake leak, turbo, MAF or EGR stuck open."],c:"maf"},
  e3:{q:["Korekty i przelewy wtrysków są w normie?","Are injector corrections and back-leak normal?"],y:"e3r1",n:"e3r2"},
  e3r1:{r:["Sprawdź czujniki temperatury (cieczy, paliwa) i rozrząd (kąt wtrysku).","Check temperature sensors (coolant, fuel) and timing (injection angle)."],c:"ntc"},
- e3r2:{r:["Wtryskiwacze – za duża dawka albo leją.","Injectors – overfuelling or dripping."],c:"rail"},
+ e3r2:{r:["Wtryskiwacze – za duża dawka albo leją.","Injectors – overfuelling or dripping."],c:"injcr"},
  e4:{q:["Ubywa płynu chłodzącego?","Is coolant being lost?"],y:"e4r",n:"e5"},
  e4r:{r:["Chłodnica EGR albo uszczelka głowicy.","EGR cooler or head gasket."],c:"egr"},
  e5:{q:["Dymi tylko na zimnym silniku?","Smoke only when the engine is cold?"],y:"e5r1",n:"e5r2"},
- e5r1:{r:["Świece żarowe albo czujnik temperatury cieczy (zła dawka na zimno).","Glow plugs or coolant temperature sensor (wrong cold fuelling)."],c:"ntc"},
- e5r2:{r:["Wtryski (słabe rozpylanie), kąt wtrysku, kompresja.","Injectors (poor atomisation), injection timing, compression."],c:"rail"}}}
+ e5r1:{r:["Świece żarowe albo czujnik temperatury cieczy (zła dawka na zimno).","Glow plugs or coolant temperature sensor (wrong cold fuelling)."],c:"glow"},
+ e5r2:{r:["Wtryski (słabe rozpylanie), kąt wtrysku, kompresja.","Injectors (poor atomisation), injection timing, compression."],c:"injcr"}}}
 };
 
 // ---------- bezpieczniki: [nr, A, opis PL, opis EN] ----------
@@ -787,7 +808,7 @@ const PLAN=[
   ["Pinouty i wartości konkretnie dla VAG, Fiata / Alfy, Opla / Renault (Vivaro, Movano) – „sprawdzone w aucie”","Pinouts and values specifically for VAG, Fiat / Alfa, Opel / Renault (Vivaro, Movano) – “verified in car”"],
   ["Parametry live data do obejrzenia w AlfaOBD / MultiECUScan / Texa przy każdym czujniku","Live data parameters to check in AlfaOBD / MultiECUScan / Texa for each sensor"]]}
 ];
-const DONE={p1:1,p2:1};let PSEL={};try{PSEL=JSON.parse(localStorage.getItem("plan")||"{}")}catch(e){}
+const DONE={p1:1,p2:1,p4:1,p9:1};let PSEL={};try{PSEL=JSON.parse(localStorage.getItem("plan")||"{}")}catch(e){}
 function renderPlan(){const en=lang==="en";let n=0;
  $("planb").textContent=(en?"💡 Development plan":"💡 Plan rozwoju")+(Object.keys(PSEL).filter(k=>PSEL[k]).length?` (${Object.keys(PSEL).filter(k=>PSEL[k]).length})`:"");
  $("plan").innerHTML=`<h3>${en?"Development plan – planned features":"Plan rozwoju – planowane funkcje"}</h3>
@@ -1185,6 +1206,98 @@ can:{name:"NOx sensor / AdBlue quality and level sensor – CAN bus (NOx / DEF)"
  tips:["The NOx sensor heats up only after reaching temperature (dew point) – a few minutes of running.","CAN-H shorted to +12 V or ground takes down the whole bus – unplug modules one by one.","Values only via scan tool (NOx ppm, AdBlue quality %)."],
  test:{s:["CAN-H – CAN-L resistance with power off: approx. 60 Ω.","H / L voltages at ignition ON.","Unplug modules one by one when the bus is down.","NOx: reading after warm-up (dew point), compare with the second NOx sensor.","AdBlue: refractometer – 32.5% urea."],w:["NOx doesn't start after warm-up with good supply and CAN","implausible reading vs the second sensor"],n:["<b>bad / contaminated AdBlue fluid</b>","crystallised AdBlue injector, tank heater","bus short caused by another module"]}}
 };
+
+// ---------- nowe karty: diesel (plan rozwoju p. 4) ----------
+CAT_EN["Diesel"]="Diesel";
+Object.assign(ICON,{
+ glow:G(`<rect x="20" y="58" width="70" height="14" rx="3" fill="url(#m)"/>${Array.from({length:6},(_,i)=>`<line x1="${28+i*8}" y1="58" x2="${25+i*8}" y2="72" stroke="#6b737b"/>`).join("")}<polygon points="90,52 112,52 118,65 112,78 90,78 84,65" fill="url(#m)" stroke="#555"/><rect x="118" y="60" width="44" height="10" fill="url(#m)"/><circle cx="168" cy="65" r="7" fill="#bbb" stroke="#555"/><rect x="8" y="61" width="14" height="8" rx="3" fill="#ff7043"/><text x="20" y="112" font-size="10" fill="#93a1b0">świeca żarowa</text>`),
+ vnt:G(`<circle cx="70" cy="62" r="40" fill="#3b4148" stroke="#000"/><circle cx="70" cy="62" r="16" fill="#1a1d21"/>${Array.from({length:8},(_,i)=>{const a=i*Math.PI/4;return `<line x1="${70+20*Math.cos(a)}" y1="${62+20*Math.sin(a)}" x2="${70+34*Math.cos(a+.4)}" y2="${62+34*Math.sin(a+.4)}" stroke="#9aa3ab" stroke-width="4"/>`}).join("")}<rect x="118" y="30" width="44" height="40" rx="20" fill="url(#p)" stroke="#000"/><line x1="140" y1="70" x2="108" y2="92" stroke="#bbb" stroke-width="4"/>${plug(150,78,30,24)}<text x="118" y="122" font-size="10" fill="#93a1b0">VNT + nastawnik</text>`),
+ mprop:G(`<rect x="40" y="40" width="70" height="50" rx="8" fill="url(#m)" stroke="#555"/><rect x="110" y="48" width="40" height="34" rx="6" fill="#263238" stroke="#000"/>${plug(150,50,28,28)}<circle cx="75" cy="65" r="12" fill="#5b646c"/><text x="40" y="112" font-size="10" fill="#93a1b0">pompa CR + MPROP</text>`),
+ injcr:G(`<rect x="85" y="6" width="34" height="22" rx="5" fill="url(#p)"/>${plug(119,4,28,24)}<rect x="90" y="28" width="24" height="70" rx="4" fill="url(#m)" stroke="#555"/><rect x="70" y="36" width="20" height="8" fill="#9aa3ab"/><rect x="96" y="98" width="12" height="18" fill="#7b858e"/><rect x="99" y="116" width="6" height="8" fill="#555"/><rect x="88" y="94" width="28" height="5" fill="#c58b2a"/><text x="10" y="70" font-size="10" fill="#93a1b0">przelew →</text>`),
+ boost:G(`<rect x="45" y="35" width="80" height="58" rx="8" fill="url(#p)" stroke="#000"/>${plug(125,48)}<rect x="72" y="93" width="24" height="16" fill="#333"/><rect x="78" y="109" width="12" height="8" fill="#222"/><text x="58" y="70" font-size="13" font-weight="700" fill="#ffb300">2.5 bar</text>`),
+ klapa:G(`<rect x="22" y="28" width="118" height="80" rx="10" fill="#4a525b" stroke="#000"/><circle cx="66" cy="68" r="30" fill="#1a1d21"/><line x1="50" y1="88" x2="82" y2="48" stroke="url(#m)" stroke-width="6"/><rect x="102" y="40" width="30" height="55" rx="6" fill="url(#p)" stroke="#000"/>${plug(132,52,30,26)}<text x="22" y="124" font-size="10" fill="#93a1b0">klapa dolotu diesla</text>`)
+});
+const glowW=t=>{if(t<.08)return 0;if(t<.36)return 11.6+.15*Math.sin(t*911);if(t<.42)return 10.4;const p=t*45%1;return p<.55?11.8:0};
+const injW=t=>{const p=t*4%1;const pulse=(a,len)=>{const q=p-a;if(q<0||q>len)return null;if(q<.012)return 66*(1-q/.012*.75);return 12+3*Math.sin(q*900)};let v=pulse(.12,.03);if(v===null)v=pulse(.3,.11);return v===null?0:v};
+D.push(
+{id:"glow",cat:"Diesel",name:"Świece żarowe i sterownik świec (GPCU)",icon:"glow",
+ pins:[{n:"30",f:"+12 V z akumulatora",v:"gruby bezpiecznik / przekaźnik",c:"zas"},{n:"31",f:"Masa",c:"gnd"},{n:"ST",f:"Sterowanie z ECU",v:"wł./wył. albo PWM",c:"sig"},{n:"DI",f:"Diagnostyka do ECU",v:"albo LIN",c:"sig2"},{n:"G1",f:"Wyjście na świecę 1",v:"G2…G4 – kolejne cylindry",c:"mot"}],
+ wave:{u:"V",x:"napięcie na świecy: grzanie → rozruch → dopalanie PWM",y:[0,14],ticks:[0,4,8,12],m:[[.08,"zapłon"],[.36,"rozruch"],[.5,"jałowy"]],
+   s:[{f:nz(glowW,.05)}]},
+ meters:[{label:"Świeca odpięta – rezystancja",val:"0.8",unit:"Ω",mode:"Ω",note:"zwykle ok. 0,3–2 Ω na zimno – porównaj świece między sobą; OL = przepalona"},{label:"Zasilanie sterownika (30)",val:"12.4",unit:"V",mode:"V⎓",note:"przy grzaniu nie może spaść poniżej ok. 11 V"},{label:"Prąd świecy – cęgi",val:"15",unit:"A",mode:"",note:"na starcie grzania kilkanaście–20+ A, po kilku s spada – porównaj cylindry"}],
+ tips:["Mierz rezystancję przy <b>odpiętym przewodzie</b> świecy – inaczej mierzysz razem ze sterownikiem.","<b>Nie podawaj bezpośrednio 12 V</b> na świece niskonapięciowe (ceramiczne / PWM, np. 4,4–7 V) – spalisz je w kilka sekund.","Szybko bez demontażu: cęgi prądowe na każdym przewodzie przy grzaniu – cylinder z 0 A = przerwa.","Wykręcaj świece na ciepłym silniku, powoli i z wyczuciem – urwana świeca to wiercenie albo zdjęcie głowicy.","Grzanie zależy od temperatury cieczy – zły czujnik temperatury = sterownik nie grzeje."]},
+
+{id:"vnt",cat:"Diesel",name:"Sterowanie turbiny VNT – zawór podciśnienia N75 / nastawnik elektryczny",icon:"vnt",
+ pins:[{n:"1",f:"+12 V (zapłon / przekaźnik główny)",c:"zas"},{n:"2",f:"Sterowanie PWM z ECU",v:"ECU zwiera do masy",c:"sig"}],
+ wave:{u:"V",x:"pin 2 zaworu N75 – PWM (niski = wysterowany)",y:[0,16],ticks:[0,4,8,12,16],
+   s:[{f:nz(t=>{const p=t*20%1;return p<.6?.3:12.4},.04)}]},
+ meters:[{label:"Zawór N75 odpięty",val:"26",unit:"Ω",mode:"Ω",note:"zwykle kilkanaście–ok. 35 Ω, zależnie od producenta – sprawdź dane"},{label:"Zapłon – zasilanie pin 1",val:"12.4",unit:"V",mode:"V⎓",note:"napięcie akumulatora"},{label:"Pracujący – wypełnienie pin 2",val:"55",unit:"%",mode:"Hz",note:"zmienia się z obciążeniem; kierunek (więcej % = więcej / mniej doładowania) zależy od marki"}],
+ tips:["Pompa vacuum daje zwykle ok. 0,8–0,9 bar podciśnienia – sprawdź wakuometrem na wężyku do N75.","Membrana nastawnika musi trzymać podciśnienie z ręcznej pompki, a cięgno chodzić płynnie po całym zakresie.","Nastawnik elektryczny (np. Hella): 12 V, masa i sterowanie PWM albo CAN; ma własną elektronikę – po wymianie zwykle nauka położeń krańcowych testerem.","Zapieczona kierownica VNT (nagar) daje na przemian za niskie i za wysokie doładowanie – częsta przyczyna, a nie N75.","Kolejność pinów zależy od zaworu – 12 V znajdziesz miernikiem przy zapłonie."]},
+
+{id:"mprop",cat:"Diesel",name:"Zawór dozujący paliwo pompy CR (MPROP / ZME / SCV / IMV)",icon:"mprop",
+ pins:[{n:"1",f:"+12 V (przekaźnik główny)",c:"zas"},{n:"2",f:"Sterowanie PWM z ECU",v:"ECU zwiera do masy",c:"sig"}],
+ wave:{u:"V",x:"pin sterowania – PWM, wypełnienie wg zadanego ciśnienia",y:[0,16],ticks:[0,4,8,12,16],
+   s:[{f:nz(t=>{const p=t*36%1;return p<.45?.4:12.3},.04)}]},
+ meters:[{label:"Zawór odpięty",val:"2.9",unit:"Ω",mode:"Ω",note:"Bosch MPROP ok. 2,6–3,2 Ω; Denso SCV / Delphi IMV inaczej – kilka Ω, sprawdź dane"},{label:"Zapłon – zasilanie",val:"12.4",unit:"V",mode:"V⎓",note:"napięcie akumulatora na pinie +"},{label:"Jałowy – ciśnienie rail (live data)",val:"300",unit:"bar",mode:"",note:"rzeczywiste ≈ zadane; na jałowym zwykle ok. 250–350 bar"}],
+ tips:["Bosch MPROP jest <b>normalnie otwarty</b> – bez prądu daje pełny przepływ; ECU zmniejsza dawkę, zwiększając prąd.","Nie jeźdź z odpiętym zaworem – ciśnienie wymyka się spod kontroli, ECU włącza tryb awaryjny.","Zanieczyszczone paliwo i opiłki zacinają tłoczek zaworu. Opiłki w paliwie oznaczają zużytą pompę – sprawdź też wtryski i listwę.","Kolejność pinów zależy od pompy – sprawdź miernikiem, gdzie jest 12 V przy zapłonie."]},
+
+{id:"injcr",cat:"Diesel",name:"Wtryskiwacz Common Rail – elektromagnetyczny / piezo (CRI)",icon:"injcr",
+ pins:[{n:"1",f:"Sterowanie + (high side)",v:"impulsy z ECU – elektromagn. ok. 48–80 V, piezo wyżej",c:"zas"},{n:"2",f:"Sterowanie − (low side)",c:"sig"}],
+ wave:{u:"V",x:"wtrysk elektromagn.: pilotowa + główna, szpilka → ok. 12 V",y:[0,80],ticks:[0,20,40,60,80],
+   s:[{f:injW}]},
+ meters:[{label:"Wtrysk odpięty – cewka",val:"0.40",unit:"Ω",mode:"Ω",note:"elektromagnetyczne zwykle ok. 0,2–0,6 Ω; piezo – setki kΩ, sam pomiar Ω mało mówi"},{label:"Izolacja pin – korpus",val:"OL",unit:"MΩ",mode:"Ω",note:"brak przejścia do korpusu"},{label:"Test przelewów",val:"8",unit:"ml",mode:"",note:"porównaj cylindry – wyraźnie większy = podejrzany; norma zależy od typu i czasu testu"}],
+ tips:["⚠ <b>Wysokie napięcie sterowania</b> – nie dotykaj pinów na pracującym silniku; przebieg oglądaj oscyloskopem albo cęgami prądowymi.","Korekty dawki / balans cylindrów (live data, ciepły silnik, jałowy) zwykle w granicach ok. ±2–3 mg/suw – odstający cylinder jest podejrzany.","Po wymianie wtrysku wpisz jego kod (IMA / IQ / C2I / QR) do sterownika.","Podkładka pod wtryskiem zawsze nowa – przedmuch (smoła wokół wtrysku) daje stuki i zakłamuje korekty.","Duża korekta na jednym cylindrze może oznaczać też niską kompresję – sprawdź, zanim wymienisz wtrysk."]},
+
+{id:"boost",cat:"Ciśnienie",name:"Czujnik ciśnienia doładowania – diesel (T-MAP 2,5–3 bar)",icon:"boost",
+ pins:[{n:"1",f:"Masa",c:"gnd"},{n:"2",f:"Temp. powietrza (IAT)",c:"sig2"},{n:"3",f:"Zasilanie 5 V",c:"ref"},{n:"4",f:"Sygnał ciśnienia",c:"sig"}],
+ wave:{u:"V",x:"zapłon (baro) → jałowy → doładowanie → puszczenie gazu",y:[0,5],ticks:[0,1,2,3,4,5],m:[[.1,"zapłon"],[.3,"jałowy"]],
+   s:[{f:nz(lerp([[0,1.7],[.3,1.75],[.42,1.9],[.6,3.9],[.75,3.8],[.82,1.8],[1,1.75]]),.02)}]},
+ meters:[{label:"Zapłon ON (baro)",val:"1.7",unit:"V",mode:"V⎓",note:"ok. 1,5–2 V zależnie od zakresu czujnika; live data ≈ ciśnienie atmosferyczne"},{label:"Jałowy",val:"1.8",unit:"V",mode:"V⎓",note:"prawie jak na zapłonie – diesel na jałowym ma bardzo małe doładowanie"},{label:"Pełne obciążenie (jazda)",val:"3.8",unit:"V",mode:"V⎓",note:"ok. 3,5–4,5 V; live data zwykle ok. 1,8–2,5 bar abs., zależnie od silnika"}],
+ tips:["Najważniejszy test: <b>zapłon ON, silnik stoi</b> – czujnik doładowania musi pokazać to samo co czujnik baro w sterowniku (różnica zwykle max. ok. 20–30 mbar).","Olej z odmy / turbiny w czujniku i jego otworze zakłamuje odczyt – oczyść albo wymień.","Nie myl z czujnikiem MAP benzyny (1 bar) – inny zakres, inne napięcia.","Odczyt w live data bywa absolutny (z baro) albo względny (nadciśnienie) – sprawdź, co pokazuje tester."]},
+
+{id:"klapa",cat:"Diesel",name:"Przepustnica / klapa dolotu diesla (klapa gasząca)",icon:"klapa",
+ pins:[{n:"1",f:"Silnik M+",v:"PWM z ECU",c:"mot"},{n:"2",f:"Masa czujnika",c:"gnd"},{n:"3",f:"Zasilanie 5 V",c:"ref"},{n:"4",f:"Silnik M−",c:"mot"},{n:"5",f:"Sygnał położenia",c:"sig"}],
+ wave:{u:"%",x:"live data: zadane vs rzeczywiste – jazda → regeneracja → gaszenie",y:[0,100],ticks:[0,25,50,75,100],
+   s:[{f:lerp([[0,100],[.3,100],[.31,55],[.6,55],[.61,100],[.8,100],[.81,0],[1,0]]),c:"#ffb300",n:"zadane"},{f:nz(lerp([[0,99],[.3,99],[.34,56],[.6,56],[.64,99],[.8,99],[.84,1],[1,1]]),.6),n:"rzeczywiste"}]},
+ meters:[{label:"Zapłon – sygnał położenia",val:"4.2",unit:"V",mode:"V⎓",note:"otwarta – zależnie od typu ok. 4 V albo ok. 0,5–1 V; przy gaszeniu przechodzi na drugi skraj"},{label:"Silnik klapy (odpięty)",val:"3.0",unit:"Ω",mode:"Ω",note:"kilka Ω, piny M+ / M−"},{label:"Zapłon – zasilanie czujnika",val:"5.00",unit:"V",mode:"V⎓",note:"4,9–5,1 V"}],
+ tips:["Przy gaszeniu silnika klapa się zamyka – diesel staje łagodnie, bez szarpnięcia.","Przymyka się też przy pracy EGR (większe podciśnienie za klapą) i przy regeneracji DPF (wyższa temperatura spalin).","Nagar z EGR i odmy blokuje klapę – czyszczenie, potem adaptacja.","Kolejność pinów różna (Bosch, Pierburg, Continental) – 5 V i masę znajdź miernikiem, silnik po rezystancji."]}
+);
+Object.assign(PROBE,{glow:[["G1","KORPUS"],["30","AKU−"],null],vnt:[["1","2"],["1","AKU−"],["2","AKU−"]],mprop:[["1","2"],["1","AKU−"],null],injcr:[["1","2"],["1","KORPUS"],null],boost:[["4","1"],["4","1"],["4","1"]],klapa:[["5","2"],["1","4"],["3","2"]]});
+["vnt","mprop","injcr"].forEach(k=>PER.add(k));
+Object.assign(TEST,{
+glow:{s:["Odczytaj błędy (P0380, P0670–P0674) i live data: stan sterowania świec, temperatura cieczy.","Rezystancja każdej świecy przy odpiętym przewodzie – porównaj cylindry.","Cęgi prądowe przy grzaniu – każda świeca bierze podobny prąd.","Sterownik: zasilanie 30, masa 31 i sygnał z ECU przy zapłonie na zimnym silniku."],w:["świeca: przerwa (OL) albo wyraźnie inna rezystancja / prąd niż pozostałe","sterownik: ma zasilanie, masę i sygnał z ECU, a na wyjściu brak napięcia"],n:["czujnik temperatury cieczy – ECU uznaje silnik za ciepły i nie grzeje","gruby bezpiecznik / przekaźnik, przewody, masa","trudny rozruch daje też za niskie ciśnienie rail, kompresja, wtryski"]},
+vnt:{s:["Live data, przyspieszanie na 3. biegu: doładowanie zadane vs rzeczywiste.","Test elementów wykonawczych – cięgno nastawnika rusza się płynnie.","Zawór N75: rezystancja, 12 V na pinie 1, PWM na pinie 2.","Podciśnienie z pompy vacuum i szczelność wężyków.","Ręczna pompka na nastawnik: membrana trzyma, cięgno chodzi bez zacięć."],w:["N75: przerwa / zwarcie albo nie przepuszcza podciśnienia przy wysterowaniu","nastawnik: dziurawa membrana albo uszkodzona elektronika (elektryczny)"],n:["<b>zapieczona kierownica VNT (nagar)</b> – czyszczenie / regeneracja turbiny","nieszczelny dolot, intercooler, pęknięte węże","czujnik doładowania – porównaj z baro na zapłonie","EGR nie domyka, zapchany DPF / katalizator"]},
+mprop:{s:["Live data: ciśnienie rail zadane vs rzeczywiste na jałowym i przy przegazówce.","Sterowanie MPROP (prąd / wypełnienie) w live data – reaguje na zmianę zadanego ciśnienia.","Rezystancja cewki i izolacja do masy.","Najpierw przelewy wtrysków, filtr i pompa wstępna (ciśnienie / podciśnienie na zasilaniu pompy)."],w:["przerwa / zwarcie cewki","ciśnienie faluje albo nie nadąża mimo dobrej pompy wstępnej, filtra i przelewów"],n:["<b>filtr paliwa, pompa wstępna, zapowietrzenie</b>","za duże przelewy wtrysków","zawór regulacyjny DRV na listwie, czujnik ciśnienia rail","zużyta pompa wysokiego ciśnienia (opiłki = poważna sprawa)"]},
+injcr:{s:["Korekty / balans cylindrów w live data (ciepły silnik, jałowy).","Test przelewów (np. 1–2 min na jałowym, menzurki) – porównaj cylindry.","Rezystancja cewki (elektromagnetyczne) i izolacja do korpusu.","Oscyloskop / cęgi: równe impulsy na wszystkich cylindrach.","Test odcinania cylindrów testerem – który nie zmienia pracy silnika."],w:["przelew wyraźnie większy niż na pozostałych","korekta przy granicy albo nie reaguje","przerwa / zwarcie cewki, przebicie do korpusu"],n:["niska kompresja na cylindrze (daje dużą korektę)","przedmuch pod wtryskiem – podkładka","wiązka / kostka, sterowanie z ECU","powietrze w paliwie, filtr"]},
+boost:{s:["Zapłon ON, silnik stoi: doładowanie = baro (live data).","Zasilanie 5 V, masa i sygnał wg tabeli.","Jazda na 3. biegu: rzeczywiste nadąża za zadanym.","Otwór / wężyk czujnika nie jest zatkany olejem."],w:["na zapłonie wyraźnie inny odczyt niż baro","sygnał skacze albo nie rośnie przy doładowaniu mimo dobrej turbiny"],n:["nieszczelny dolot – za niskie doładowanie","sterowanie turbiny VNT","brak 5 V / masy – wiązka"]},
+klapa:{s:["Live data: otwarcie zadane vs rzeczywiste.","Zgaś silnik – słychać i widać zamknięcie klapy.","Test elementów wykonawczych.","Po czyszczeniu – adaptacja."],w:["silnik / przekładnia zacięte mimo czyszczenia","ścieżka czujnika położenia przerywa"],n:["<b>nagar – czyszczenie + adaptacja</b>","wiązka / kostka","EGR – klapa i EGR często pracują razem"]}
+});
+Object.assign(EN,{
+glow:{name:"Glow plugs and glow plug control unit (GPCU)",pins:[["+12 V from battery","heavy fuse / relay"],["Ground"],["Control from ECU","on/off or PWM"],["Diagnostics to ECU","or LIN"],["Output to glow plug 1","G2…G4 – next cylinders"]],x:"glow plug voltage: pre-heat → cranking → PWM after-glow",
+ meters:[["Plug unplugged – resistance","usually approx. 0.3–2 Ω cold – compare plugs; OL = burnt out"],["Control unit supply (30)","must not drop below approx. 11 V while heating"],["Plug current – clamp","at start of heating 15–20+ A, drops after a few s – compare cylinders"]],
+ tips:["Measure resistance with the plug <b>wire disconnected</b> – otherwise you measure together with the control unit.","<b>Never apply 12 V directly</b> to low-voltage plugs (ceramic / PWM, e.g. 4.4–7 V) – they burn out in seconds.","Quick check without removal: current clamp on each plug wire while heating – a cylinder with 0 A = open circuit.","Remove plugs on a warm engine, slowly and with feel – a snapped plug means drilling or taking the head off.","Heating depends on coolant temperature – a bad temperature sensor = no glow."],
+ test:{s:["Read codes (P0380, P0670–P0674) and live data: glow control status, coolant temperature.","Resistance of each plug with the wire disconnected – compare cylinders.","Current clamp while heating – each plug draws similar current.","Control unit: supply 30, ground 31 and ECU signal at ignition ON on a cold engine."],w:["plug: open (OL) or clearly different resistance / current than the others","control unit: has supply, ground and ECU signal, but no output voltage"],n:["coolant temperature sensor – ECU thinks the engine is warm and doesn't glow","heavy fuse / relay, wiring, ground","hard starting is also caused by low rail pressure, compression, injectors"]}},
+vnt:{name:"VNT turbo control – N75 vacuum valve / electric actuator",pins:[["+12 V (ignition / main relay)"],["PWM control from ECU","ECU switches to ground"]],x:"N75 valve pin 2 – PWM (low = energised)",
+ meters:[["N75 valve unplugged","usually from about 15 to approx. 35 Ω depending on maker – check data"],["Ignition – supply pin 1","battery voltage"],["Running – duty on pin 2","changes with load; direction (more % = more / less boost) depends on the make"]],
+ tips:["The vacuum pump usually gives approx. 0.8–0.9 bar of vacuum – check with a gauge on the hose to the N75.","The actuator diaphragm must hold vacuum from a hand pump and the rod must move smoothly over the full range.","Electric actuator (e.g. Hella): 12 V, ground and PWM or CAN control; it has its own electronics – after replacement end positions usually have to be learned with a scan tool.","Sticking VNT vanes (carbon) give alternating underboost and overboost – a frequent cause, rather than the N75.","Pin order depends on the valve – find 12 V with a meter at ignition ON."],
+ test:{s:["Live data, accelerating in 3rd gear: target vs actual boost.","Actuator test – the actuator rod moves smoothly.","N75 valve: resistance, 12 V on pin 1, PWM on pin 2.","Vacuum from the vacuum pump and tight hoses.","Hand pump on the actuator: diaphragm holds, rod moves without sticking."],w:["N75: open / short or doesn't pass vacuum when energised","actuator: holed diaphragm or faulty electronics (electric type)"],n:["<b>sticking VNT vanes (carbon)</b> – cleaning / turbo overhaul","intake / intercooler leak, cracked hoses","boost sensor – compare with baro at ignition ON","EGR not closing, clogged DPF / catalyst"]}},
+mprop:{name:"CR pump fuel metering valve (MPROP / ZME / SCV / IMV)",pins:[["+12 V (main relay)"],["PWM control from ECU","ECU switches to ground"]],x:"control pin – PWM, duty per target rail pressure",
+ meters:[["Valve unplugged","Bosch MPROP approx. 2.6–3.2 Ω; Denso SCV / Delphi IMV differ – a few Ω, check data"],["Ignition – supply","battery voltage on the + pin"],["Idle – rail pressure (live data)","actual ≈ target; at idle usually approx. 250–350 bar"]],
+ tips:["Bosch MPROP is <b>normally open</b> – with no current it gives full flow; the ECU reduces fuel by increasing current.","Don't drive with the valve unplugged – pressure gets out of control and the ECU enters limp mode.","Dirty fuel and metal particles make the valve piston stick. Metal in the fuel means a worn pump – check injectors and rail too.","Pin order depends on the pump – find which pin has 12 V at ignition ON."],
+ test:{s:["Live data: target vs actual rail pressure at idle and on a blip.","MPROP control (current / duty) in live data – follows the change of target pressure.","Coil resistance and insulation to ground.","First check injector back-leak, filter and lift pump (pressure / vacuum at the pump inlet)."],w:["open / short coil","pressure fluctuates or lags despite good lift pump, filter and back-leak"],n:["<b>fuel filter, lift pump, air in the system</b>","excessive injector back-leak","DRV regulating valve on the rail, rail pressure sensor","worn high-pressure pump (metal particles = serious)"]}},
+injcr:{name:"Common Rail injector – solenoid / piezo (CRI)",pins:[["Control + (high side)","ECU pulses – solenoid approx. 48–80 V, piezo higher"],["Control − (low side)"]],x:"solenoid injector: pilot + main, spike → approx. 12 V",
+ meters:[["Injector unplugged – coil","solenoid usually approx. 0.2–0.6 Ω; piezo – hundreds of kΩ, Ω alone says little"],["Insulation pin – body","no continuity to the body"],["Back-leak test","compare cylinders – clearly higher = suspect; limits depend on type and test time"]],
+ tips:["⚠ <b>High control voltage</b> – don't touch the pins on a running engine; view the waveform with a scope or a current clamp.","Fuel corrections / cylinder balance (live data, warm engine, idle) are usually within approx. ±2–3 mg/stroke – an outlier cylinder is suspect.","After replacing an injector, enter its code (IMA / IQ / C2I / QR) into the ECU.","Always fit a new injector washer – blow-by (tar around the injector) causes knocking and false corrections.","A large correction on one cylinder can also mean low compression – check before replacing the injector."],
+ test:{s:["Fuel corrections / cylinder balance in live data (warm engine, idle).","Back-leak test (e.g. 1–2 min at idle, measuring tubes) – compare cylinders.","Coil resistance (solenoid) and insulation to the body.","Scope / clamp: equal pulses on all cylinders.","Cylinder cut-out test with a scan tool – which one doesn't change engine running."],w:["back-leak clearly higher than the others","correction at the limit or not responding","open / short coil, short to the body"],n:["low compression on the cylinder (gives a large correction)","blow-by under the injector – washer","wiring / connector, ECU control","air in the fuel, filter"]}},
+boost:{name:"Boost pressure sensor – diesel (T-MAP 2.5–3 bar)",pins:[["Ground"],["Air temperature (IAT)"],["5 V supply"],["Pressure signal"]],x:"ignition (baro) → idle → boost → lifting off",
+ meters:[["Ignition ON (baro)","approx. 1.5–2 V depending on sensor range; live data ≈ atmospheric pressure"],["Idle","almost as at ignition – a diesel has very little boost at idle"],["Full load (driving)","approx. 3.5–4.5 V; live data usually approx. 1.8–2.5 bar abs., depending on engine"]],
+ tips:["Most important test: <b>ignition ON, engine stopped</b> – the boost sensor must read the same as the ECU baro sensor (difference usually max. approx. 20–30 mbar).","Oil from the breather / turbo in the sensor or its port gives false readings – clean or replace.","Don't confuse with a petrol MAP sensor (1 bar) – different range, different voltages.","Live data may show absolute (incl. baro) or relative (gauge) pressure – check what the tool shows."],
+ test:{s:["Ignition ON, engine stopped: boost = baro (live data).","5 V supply, ground and signal as in the table.","Driving in 3rd gear: actual follows target.","The sensor port / hose is not blocked with oil."],w:["clearly different from baro at ignition ON","signal jumps or doesn't rise with boost despite a good turbo"],n:["intake leak – underboost","VNT turbo control","no 5 V / ground – wiring"]}},
+klapa:{name:"Diesel intake throttle / flap (shut-off flap)",pins:[["Motor M+","PWM from ECU"],["Sensor ground"],["5 V supply"],["Motor M−"],["Position signal"]],x:"live data: target vs actual – driving → regeneration → shutdown",
+ meters:[["Ignition – position signal","open – depending on type approx. 4 V or approx. 0.5–1 V; goes to the other end at shutdown"],["Flap motor (unplugged)","a few Ω, pins M+ / M−"],["Ignition – sensor supply","4.9–5.1 V"]],
+ tips:["The flap closes when the engine is switched off – the diesel stops smoothly, without a shudder.","It also partly closes when EGR works (more vacuum behind the flap) and during DPF regeneration (higher exhaust temperature).","Carbon from EGR and the breather jams the flap – clean it, then run an adaptation.","Pin order differs (Bosch, Pierburg, Continental) – find 5 V and ground with a meter, the motor by resistance."],
+ test:{s:["Live data: target vs actual opening.","Switch off the engine – the flap is heard and seen closing.","Actuator test.","After cleaning – adaptation."],w:["motor / gear sticking despite cleaning","position sensor track drops out"],n:["<b>carbon – cleaning + adaptation</b>","wiring / connector","EGR – the flap and EGR often work together"]}}
+});
 
 // ---------- język, interfejs, wyszukiwarka ----------
 let lang="pl";try{lang=localStorage.getItem("lang")||"pl"}catch(e){}
