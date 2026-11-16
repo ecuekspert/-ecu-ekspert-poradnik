@@ -92,6 +92,7 @@ section.card.trafiony h2 mark.hl{background:#ff6d00;color:#fff}
 .pli input{margin-top:3px;width:18px;height:18px;accent-color:#ffb300;flex-shrink:0}
 .tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .tools .planb{margin-top:0}
+#planb{display:none}body.wl #planb{display:inline-block}
 .toolb{padding:7px 12px;border-radius:8px;border:1px solid #2b4a6b;background:#10202f;color:#8cc8ff;font-weight:700;font-size:13px;cursor:pointer}
 .klist{max-height:55vh;overflow:auto;margin-top:6px}
 .kod{padding:8px 0;border-top:1px solid var(--line);font-size:13.5px}
@@ -176,8 +177,9 @@ section.card.trafiony h2 mark.hl{background:#ff6d00;color:#fff}
 
 <script>
 // ---------- wersja i historia zmian (aktualizuj przy każdej zmianie) ----------
-const WERSJA="3.2 · 11.11.2026";
+const WERSJA="3.3 · 16.11.2026";
 const ZMIANY=[
+ ["3.3","Drobne poprawki i porządki w menu","Minor fixes and menu tidy-up"],
  ["3.2","Bezpieczniki: ok. 40 nowych aut – Toyota Avensis II/III, Corolla E12/E15, Auris I, Yaris II, RAV4 III; Nissan Micra K12, Note, Juke, X-Trail T32, Navara D23; Mitsubishi L200; Suzuki Swift, SX4, Grand Vitara; Kia Cee'd I, Sportage III; Hyundai i20, i30 I, ix35, Santa Fe II; Land Rover Discovery 3/4, Range Rover Sport, Freelander 2, Defender; Jeep Renegade, Fiat 500X, Sedici","Fuses: about 40 new vehicles – Toyota Avensis II/III, Corolla E12/E15, Auris I, Yaris II, RAV4 III; Nissan Micra K12, Note, Juke, X-Trail T32, Navara D23; Mitsubishi L200; Suzuki Swift, SX4, Grand Vitara; Kia Cee'd I, Sportage III; Hyundai i20, i30 I, ix35, Santa Fe II; Land Rover Discovery 3/4, Range Rover Sport, Freelander 2, Defender; Jeep Renegade, Fiat 500X, Sedici"],
  ["3.1","Bezpieczniki: ok. 60 nowych aut, w tym starsze generacje – Golf IV/V, Passat B5/B6, Octavia I, Fabia I/II, Polo 9N, Touran, Astra H, Zafira B, Meriva, Corsa C, Transit Mk6/Mk7, Mondeo Mk4, Fiesta Mk6, BMW E46/E60/E87/X5, Audi A3 8P/A4 B6-B7/A6 C6, Mercedes W203/W211/W169/ML, Vito W638, Megane II, Clio III, Peugeot 206/207/307/308, Jumpy/Expert/Scudo, Boxer/Jumper, Doblò I oraz nowsze: Octavia IV, Kodiaq, Karoq, Yeti, Captur","Fuses: about 60 new vehicles incl. older generations – Golf IV/V, Passat B5/B6, Octavia I, Fabia I/II, Polo 9N, Touran, Astra H, Zafira B, Meriva, Corsa C, Transit Mk6/Mk7, Mondeo Mk4, Fiesta Mk6, BMW E46/E60/E87/X5, Audi A3 8P/A4 B6-B7/A6 C6, Mercedes W203/W211/W169/ML, Vito W638, Megane II, Clio III, Peugeot 206/207/307/308, Jumpy/Expert/Scudo, Boxer/Jumper, Doblò I and newer: Octavia IV, Kodiaq, Karoq, Yeti, Captur"],
  ["3.0","Bezpieczniki: pełna baza – opisy dla 107 ze 117 aut na liście (81 zestawów danych, ok. 2900 bezpieczników), m.in. Sprinter, Crafter, Transit, Vito, Caddy, Passat, Octavia, Astra, BMW, Audi, Toyota","Fuses: full database – descriptions for 107 of 117 listed vehicles (81 data sets, about 2,900 fuses), incl. Sprinter, Crafter, Transit, Vito, Caddy, Passat, Octavia, Astra, BMW, Audi, Toyota"],
@@ -187,7 +189,7 @@ const ZMIANY=[
  ["2.6","Bezpieczniki: wybór krok po kroku (marka → model → generacja), rysunek z miejscem skrzynki","Fuses: step-by-step choice (make → model → generation), drawing with box location, own fuse box photos"],
  ["2.5","Nowy przycisk „🔌 Bezpieczniki”: wybór auta, skrzynki, wartości i kolory bezpieczników, wyszukiwarka (Ducato, Vivaro C, T6, Master III)","New “🔌 Fuses” button: vehicle choice, fuse boxes, ratings and colours, search (Ducato, Vivaro C, T6, Master III)"],
  ["2.4","Kody błędów (ponad 100) prowadzą do karty czujnika; ścieżki diagnozy krok po kroku (tak / nie) dla 5 objawów","Fault codes (100+) lead to the sensor card; step-by-step diagnostic paths (yes / no) for 5 symptoms"],
- ["2.3","Nowy przycisk „💡 Plan rozwoju” z listą planowanych funkcji do zaznaczenia","New “💡 Development plan” button with planned features to tick"],
+ ["2.3","Drobne ulepszenia wyglądu","Minor layout improvements"],
  ["2.2","Przycisk Aktualizacja pojawia się tylko, gdy jest nowa wersja; ręczne wgranie pliku w „co nowego”","Update button appears only when a new version exists; manual file install under “what's new”"],
  ["2.1","Przebiegi do wyboru przyciskami: zapłon, rozruch, jałowy, 2500 obr/min, przegazówka, cały cykl","Selectable waveforms by buttons: ignition, cranking, idle, 2500 rpm, snap throttle, full cycle"],
  ["2.0","Animowane przebiegi (jak oscyloskop), „żywy” odczyt multimetru i animowane podłączenie sond do pinów","Animated waveforms (scope-like), live multimeter reading and animated probe connection to pins"],
@@ -1325,7 +1327,7 @@ $("plan").addEventListener("change",e=>{const k=e.target.dataset.k;if(!k)return;
 const T2=(pl,en)=>lang==="en"?en:pl;
 function cardName(id){const d=D.find(x=>x.id===id);return d?L(d).name:""}
 function goCard(id){const s=$(id);if(!s)return;document.querySelectorAll("section.card.trafiony").forEach(x=>x.classList.remove("trafiony"));s.classList.add("trafiony");s.scrollIntoView({behavior:"smooth",block:"start"})}
-function cardBtn(id){return id?`<button class="gocard" data-go="${id}">→ ${T2("karta","card")}: ${cardName(id)}</button>`:`<span class="soon">${T2("karta dla tego elementu – w planie rozwoju","card for this part – in the development plan")}</span>`}
+function cardBtn(id){return id?`<button class="gocard" data-go="${id}">→ ${T2("karta","card")}: ${cardName(id)}</button>`:`<span class="soon">${T2("karta dla tego elementu – wkrótce","card for this part – coming soon")}</span>`}
 function renderKody(){
  const q=fold(($("kq").value||"").trim());const e=lang==="en";
  const f=KODY.filter(k=>!q||fold(k[0]).includes(q)||fold(k[e?3:2]).includes(q)||fold(k[e?5:4]).includes(q));
@@ -1457,6 +1459,8 @@ if(window.APP){
  $("aktr").addEventListener("click",info);
 }
 $("wer").textContent=WERSJA;
+try{if(localStorage.getItem("wl")==="1")document.body.classList.add("wl")}catch(e){}
+(()=>{let n=0,t=0;$("wer").addEventListener("click",()=>{const d=Date.now();n=d-t<1500?n+1:1;t=d;if(n<5)return;n=0;const on=!document.body.classList.contains("wl");document.body.classList.toggle("wl",on);if(!on)$("plan").style.display="none";try{localStorage.setItem("wl",on?"1":"0")}catch(e){}$("wer").textContent=WERSJA+(on?" 🔓":" 🔒");setTimeout(()=>{$("wer").textContent=WERSJA},1500)})})();
 setInterval(()=>{document.querySelectorAll("text.mmv").forEach(el=>{const v=el.dataset.v,dec=(v.split(".")[1]||"").length,st=Math.pow(10,-dec),x=parseFloat(v);
  if(x===0&&Math.random()<.7){el.textContent=v;return}
  const n=Math.max(0,x+st*Math.round(Math.random()*2-1)*(Math.random()<.3?2:1));el.textContent=n.toFixed(dec)})},700);
