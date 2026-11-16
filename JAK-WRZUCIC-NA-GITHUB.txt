@@ -1,0 +1,41 @@
+ECU EKSPERT - Poradnik: jak wrzucic na GitHub
+=============================================
+
+1. ZALOZ REPOZYTORIUM
+   github.com -> zielony przycisk "New" (lub + w prawym gornym rogu -> New repository)
+   - Repository name: ecu-ekspert-poradnik
+   - Public (potrzebne, zeby program .exe mogl pobierac aktualizacje;
+     to nie jest strona internetowa - tylko magazyn plikow)
+   - NIE zaznaczaj "Add a README"
+   -> Create repository
+
+2. WRZUC PLIKI
+   Rozpakuj ten zip. Na stronie nowego repozytorium kliknij
+   "uploading an existing file" (albo Add file -> Upload files).
+   Przeciagnij do okna WSZYSTKO z folderu ecu-ekspert-poradnik
+   (razem z folderami .github, android, windows) -> Commit changes.
+
+   Jesli folder .github sie nie wgra (zdarza sie):
+   Actions -> "set up a workflow yourself" -> nazwa pliku: android.yml
+   -> wklej zawartosc pliku .github/workflows/android.yml -> Commit.
+
+3. APLIKACJA NA ANDROIDA
+   Zakladka Actions -> "Zbuduj APK" buduje sie sam (ok. 3-5 min).
+   Gotowy plik: strona glowna repozytorium -> po prawej "Releases"
+   -> ECU-Ekspert-Poradnik.apk. Pobierz na telefon i zainstaluj
+   (telefon zapyta o zgode na instalacje z nieznanego zrodla - zezwol).
+   Kazda nowa wersja poradnik.html wrzucona do repozytorium
+   = nowy APK w Releases.
+
+4. AKTUALIZACJE PROGRAMU NA WINDOWS
+   Otworz plik adres-aktualizacji.txt w folderze programu
+   (%LOCALAPPDATA%\EcuEkspert\Poradnik) albo w instalatorze
+   i wpisz w ostatniej linii adres repozytorium:
+   https://github.com/TWOJA-NAZWA/ecu-ekspert-poradnik
+   Od tej pory program sam pokaze przycisk "Aktualizacja",
+   gdy w repozytorium bedzie nowsza wersja.
+
+5. NOWA WERSJA PORADNIKA
+   W repozytorium: kliknij poradnik.html -> ikona olowka
+   lub Add file -> Upload files -> wgraj nowy poradnik.html -> Commit.
+   Program .exe sam to wykryje i pokaze przycisk "Aktualizacja".
