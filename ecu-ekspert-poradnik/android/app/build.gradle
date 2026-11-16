@@ -1,0 +1,14 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'pl.ecuekspert.poradnik'
+    compileSdk 34
+    defaultConfig {
+        applicationId 'pl.ecuekspert.poradnik'
+        minSdk 24
+        targetSdk 34
+        versionCode Integer.parseInt(System.getenv('GITHUB_RUN_NUMBER') ?: '1')
+        versionName '3.2'
+    }
+    buildTypes { release { minifyEnabled false } }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
