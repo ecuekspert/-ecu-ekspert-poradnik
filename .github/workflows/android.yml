@@ -17,13 +17,19 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
+      - name: Znajdz projekt Android
+        run: |
+          S=$(find . -name settings.gradle -not -path './.git/*' | head -1)
+          if [ -z "$S" ]; then echo "BRAK FOLDERU ANDROID"; find . -maxdepth 4 -not -path './.git*'; exit 1; fi
+          echo "AND=$(dirname "$S")" >> $GITHUB_ENV
       - name: Skopiuj poradnik do aplikacji
-        run: cp poradnik.html ecu-ekspert-poradnik/android/app/src/main/assets/poradnik.html
+        run: |
+          mkdir -p "$AND/app/src/main/assets"
+          cp poradnik.html "$AND/app/src/main/assets/poradnik.html"
       - name: Buduj
-        working-directory: ecu-ekspert-poradnik/android
-        run: gradle assembleDebug --no-daemon
+        run: cd "$AND" && gradle assembleDebug --no-daemon
       - name: Nazwij plik
-        run: cp ecu-ekspert-poradnik/android/app/build/outputs/apk/debug/app-debug.apk ECU-Ekspert-Poradnik.apk
+        run: cp "$AND/app/build/outputs/apk/debug/app-debug.apk" ECU-Ekspert-Poradnik.apk
       - uses: actions/upload-artifact@v4
         with:
           name: ECU-Ekspert-Poradnik-APK
