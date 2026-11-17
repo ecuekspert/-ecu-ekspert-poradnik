@@ -15,7 +15,17 @@ h1 span{color:var(--acc)}
 .sub{color:var(--mut);font-size:13px}
 #q{margin-top:10px;width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#11161b;color:var(--txt);font-size:15px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.chip{font-size:12px;padding:5px 10px;border-radius:20px;border:1px solid var(--line);background:#11161b;color:var(--mut);cursor:pointer}
+.chip{font-size:13px;padding:7px 12px;border-radius:20px;border:1px solid #6b5a1e;background:#1d1a10;color:#ffd27a;font-weight:700;cursor:pointer;white-space:nowrap}
+.chiplab{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.05em}
+.chiph{display:none;text-transform:none;letter-spacing:0;color:#ffd27a;animation:pulsh 1.6s ease-in-out infinite}
+@keyframes pulsh{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.chipw{position:relative}.chipw .chips{margin-top:4px}
+.chipr{display:none}
+@media(max-width:799px){.chiph{display:inline}.chipw::after{content:"";position:absolute;right:0;top:0;bottom:4px;width:56px;background:linear-gradient(90deg,rgba(15,18,22,0),rgba(15,18,22,.97) 70%);pointer-events:none}
+ .chipr{display:block;position:absolute;right:0;top:50%;transform:translateY(-58%);z-index:2;width:34px;height:34px;border-radius:50%;border:0;background:var(--acc);color:#111;font-size:22px;font-weight:900;line-height:30px;box-shadow:0 2px 8px #000a;cursor:pointer}
+ .chipw.end::after,.chipw.end .chipr{display:none}}
+body.light .chipw::after{background:linear-gradient(90deg,rgba(243,245,247,0),rgba(243,245,247,.97) 70%)}
+body.light .chip{background:#fff6dd;border-color:#e0b04a;color:#7a4a00}
 .chip.on{background:var(--acc);color:#111;border-color:var(--acc)}
 main{max-width:1100px;margin:0 auto;padding:12px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:14px 0;overflow:hidden}
@@ -205,7 +215,8 @@ body.light .kp,body.light .sub,body.light .psrc{color:#3d4853}
   <div id="plan" class="box" style="display:none;margin-top:8px"></div>
   <div id="cnbox" class="box" style="display:none;margin-top:8px"><h3 id="cnh"></h3><ul class="tips" id="cnlist"></ul></div>
   <div class="srow"><input id="q" type="search" autocomplete="off"><span id="sinfo"></span></div>
-  <div class="chips" id="chips"></div>
+  <div class="chiplab"><span id="chipl"></span><span id="chiph" class="chiph"></span></div>
+  <div class="chipw"><div class="chips" id="chips"></div><button id="chipr" class="chipr" aria-label="›">›</button></div>
 </header>
 <main>
   <div class="card intro" id="intro"></div>
@@ -216,8 +227,9 @@ body.light .kp,body.light .sub,body.light .psrc{color:#3d4853}
 
 <script>
 // ---------- wersja i historia zmian (aktualizuj przy każdej zmianie) ----------
-const WERSJA="3.6 · 17.11.2026";
+const WERSJA="3.7 · 17.11.2026";
 const ZMIANY=[
+ ["3.7","Działy (kategorie) lepiej widoczne: wyraźne przyciski z ikonami, napis „Działy” z liczbą, na telefonie strzałka ›, cieniowanie przy krawędzi i podpowiedź „przesuń palcem”","Sections (categories) more visible: clear buttons with icons, “Sections” label with count, on phones a › arrow, edge fade and a “swipe” hint"],
  ["3.6","Wygodniej na telefonie: kategorie w jednym przesuwanym pasku, zasady pomiaru zwinięte, na górze każdej karty szybkie wartości; nowy 📋 Spis kart; przycisk ↩ Wróć po przejściu z kodu / ścieżki / spisu; jasny motyw ☀ (do pracy w słońcu) i większa czcionka A+","Easier on phones: categories in one scrolling bar, measuring rules collapsed, quick values at the top of every card; new 📋 Card list; ↩ Back button after jumping from a code / path / list; light theme ☀ (for sunlight) and larger text A+"],
  ["3.5","Nowe karty: pompa, wtryskiwacz i zbiornik AdBlue (grzałki, temperatura, poziom), czujnik niskiego ciśnienia paliwa, czujnik obrotów turbiny, wentylator chłodnicy, przekaźniki, bezpieczniki (spadek napięcia), masy; nowy przycisk 🧮 Kalkulatory: napięcie ↔ ciśnienie, NTC, spadek napięcia na przewodzie; 16 nowych kodów","New cards: AdBlue pump, injector and tank (heaters, temperature, level), low fuel pressure sensor, turbo speed sensor, radiator fan, relays, fuses (voltage drop), grounds; new 🧮 Calculators button: voltage ↔ pressure, NTC, wire voltage drop; 16 new codes"],
  ["3.4","Nowe karty diesla: świece żarowe i sterownik, turbina VNT (N75 / nastawnik), zawór MPROP / SCV, wtryskiwacze CR (przelewy, korekty), czujnik doładowania, klapa dolotu; 20 nowych kodów błędów","New diesel cards: glow plugs and control unit, VNT turbo (N75 / actuator), MPROP / SCV valve, CR injectors (back-leak, corrections), boost sensor, intake flap; 20 new fault codes"],
@@ -1588,6 +1600,8 @@ function L(d){
   tips:e.tips,test:e.test});
 }
 const cats=["",...new Set(D.map(d=>d.cat))];
+const CEMO={"":"📚","Zasilanie":"🔋","Obroty / fazy":"⚙️","Ciśnienie":"⏲️","Powietrze":"🌬️","Temperatura":"🌡️","Położenie":"📐","Spaliny":"💨","Spalanie":"🔥","DPF / EGR":"🏭","Koła":"🛞","Elementy wykonawcze":"🔧","Magistrala":"🔗","Diesel":"⛽","AdBlue / SCR":"💧"};
+function chipEnd(){const c=$("chips");if(!c)return;$("chips").parentNode.classList.toggle("end",c.scrollLeft+c.clientWidth>=c.scrollWidth-4)}
 const slug=c=>"dzial-"+c.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/ł/g,"l").replace(/[^a-zA-Z0-9]+/g,"-").toLowerCase();
 function card(d0){const d=L(d0),u=UI[lang];return `<section class="card" id="${d.id}"><div class="ch"><h2>${d.name.replace(/\(([^()]*)\)$/,'<span style="color:#ffb300;white-space:nowrap">($1)</span>')}</h2><span class="tag">${CN(d.cat)}</span></div>
  ${d.meters?`<div class="quick">${d.meters.map(m=>`<div class="q"><small>${m.label}</small><b>${m.val} ${m.unit}</b><small>${m.note||""}</small></div>`).join("")}</div>`:""}
@@ -1621,7 +1635,7 @@ function renderAll(){
  if($("bezp").style.display==="block")renderBezp();
  $("kalkb").textContent=T2("🧮 Kalkulatory","🧮 Calculators");$("spisb").textContent=T2("📋 Spis kart","📋 Card list");$("spish").textContent=T2("Spis kart – kliknij, aby przejść","Card list – tap to open");if($("spis").style.display==="block")renderSpis();$("wroc").textContent=T2("↩ Wróć","↩ Back");$("lightb").title=T2("Jasny motyw (słońce)","Light theme (sunlight)");$("bigb").title=T2("Większa czcionka","Larger text");$("kalkh").textContent=T2("Kalkulatory warsztatowe","Workshop calculators");if($("kalk").style.display==="block")renderKalk();
  if($("kody").style.display==="block")renderKody();if($("sciez").style.display==="block")renderSciezki();
- $("chips").innerHTML=cats.map(c=>`<button class="chip" data-c="${c}">${c?CN(c):u.all}</button>`).join("");
+ $("chips").innerHTML=cats.map(c=>`<button class="chip" data-c="${c}">${(CEMO[c]||"")+" "+(c?CN(c):u.all)}</button>`).join("");$("chipl").textContent=T2("Działy","Sections")+" ("+(cats.length-1)+")";$("chiph").textContent=T2("przesuń palcem ➜","swipe ➜");chipEnd();
  let html="";
  cats.slice(1).forEach(c=>{const g=D.filter(d=>d.cat===c);
   html+=`<div class="dzial" id="${slug(c)}"><span>${CN(c)}</span><small>${u.cnt(g.length)}</small></div>`+g.map(card).join("")});
@@ -1662,6 +1676,10 @@ $("snp").addEventListener("click",()=>go(cur-1));$("snn").addEventListener("clic
 $("snx").addEventListener("click",()=>{$("q").value="";clearMarks();nav();window.scrollTo({top:0,behavior:"smooth"})});
 // --- przełączniki ---
 $("lang").addEventListener("click",e=>{const l=e.target.dataset.l;if(!l||l===lang)return;lang=l;try{localStorage.setItem("lang",l)}catch(x){}renderAll()});
+let CAUTO=false;$("chips").addEventListener("scroll",()=>{chipEnd();if(CAUTO)return;try{localStorage.setItem("chipSeen","1")}catch(x){}$("chiph").style.visibility="hidden"});
+$("chipr").addEventListener("click",()=>{$("chips").scrollBy({left:180,behavior:"smooth"})});
+window.addEventListener("resize",chipEnd);
+setTimeout(()=>{let seen=false;try{seen=localStorage.getItem("chipSeen")==="1"}catch(x){}if(seen){$("chiph").style.visibility="hidden";return}const c=$("chips");if(c.scrollWidth>c.clientWidth){CAUTO=true;setTimeout(()=>{CAUTO=false},2200);c.scrollTo({left:90,behavior:"smooth"});setTimeout(()=>{c.scrollTo({left:0,behavior:"smooth"});setTimeout(()=>{$("chiph").style.visibility="visible"},600)},900)}},1200);
 $("chips").addEventListener("click",e=>{const c=e.target.dataset.c;if(c===undefined)return;
  document.querySelectorAll(".chip").forEach(b=>b.classList.toggle("on",b===e.target));
  const el=c===""?document.body:$(slug(c));if(el)el.scrollIntoView({behavior:"smooth",block:"start"})});
