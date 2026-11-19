@@ -2,6 +2,15 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
+<script id="selfupd">/* samoaktualizacja wersji HTML: jeśli w pamięci jest nowsza wersja – pokaż ją */
+(function(){var EMB="4.2";try{
+ if(location.protocol!=="file:"||window.APP||/\bwv\b/.test(navigator.userAgent)||/EcuEkspert/i.test(location.pathname)||window.top!==window)return;
+ var v=localStorage.getItem("porUpdV"),h=localStorage.getItem("porUpdH");if(!v||!h)return;
+ var c=function(a,b){a=a.split(".");b=b.split(".");for(var i=0;i<Math.max(a.length,b.length);i++){var x=+(a[i]||0),y=+(b[i]||0);if(x!==y)return x>y?1:-1}return 0};
+ if(c(v,EMB)<=0){localStorage.removeItem("porUpdV");localStorage.removeItem("porUpdH");return}
+ document.write('<body style="margin:0;overflow:hidden;background:#0f1216"><iframe id="porupd" title="ECU EKSPERT" style="border:0;width:100vw;height:100vh;display:block"></iframe><plaintext style="display:none">');
+ var f=document.getElementById("porupd");f.srcdoc=h;f.onload=function(){try{document.title=f.contentDocument.title}catch(e){}};
+}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ECU EKSPERT – Poradnik elektryka samochodowego</title>
 <style>
@@ -160,6 +169,7 @@ section.card.trafiony h2 mark.hl{background:#ff6d00;color:#fff}
 #ba,#kq,#bbody #bq{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:#11161b;color:var(--txt);font-size:15px;margin-top:6px}
 #ba{border-color:#6b5a1e}
 .empty{color:var(--mut);text-align:center;padding:30px}
+#updbox{position:fixed;left:50%;transform:translateX(-50%);bottom:74px;z-index:20;width:min(520px,calc(100vw - 24px));background:#132235;border:2px solid #1e88e5;border-radius:14px;padding:12px 14px;box-shadow:0 8px 28px #000c;font-size:14px;color:#e8edf2}#updbox .ub{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}#updbox button{padding:9px 14px;border-radius:9px;border:0;font-weight:700;cursor:pointer;background:#2b3644;color:#e8edf2}#updbox button#updok,#updbox button#updgo{background:#1e88e5;color:#fff}body.light #updbox{background:#eef5fd;color:#111}body.light #updbox button{background:#dfe6ee;color:#111}
 .kstep{margin:6px 0 2px}.kstep summary{cursor:pointer;color:#7cc4ff;font-weight:700;font-size:13px}.kstep ol{margin:6px 0 4px;padding-left:20px;font-size:13px;color:#cfd6dd}.kstep li{margin:3px 0}body.light .kstep ol{color:#1c2228}body.light .kstep summary{color:#0b4f8a}
 /* --- 3.6: telefon, spis, wróć, jasny motyw, duża czcionka --- */
 @media(max-width:799px){.chips{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{flex-shrink:0}
@@ -243,8 +253,9 @@ body.light .kp,body.light .sub,body.light .psrc{color:#3d4853}
 
 <script>
 // ---------- wersja i historia zmian (aktualizuj przy każdej zmianie) ----------
-const WERSJA="4.1 · 19.11.2026";
+const WERSJA="4.2 · 19.11.2026";
 const ZMIANY=[
+ ["4.2","Wersja HTML (plik otwarty w przeglądarce, np. na Macu) sama sprawdza aktualizacje na GitHubie i pyta o zgodę; po zgodzie otwiera nową wersję i pozwala zapisać nowy plik","HTML version (file opened in a browser, e.g. on a Mac) checks GitHub for updates and asks first; after consent it opens the new version and lets you save the new file"],
  ["4.1","Bezpieczniki: BMW Seria 3 G20 / G21 (2018–) – skrzynka pod schowkiem, bezpieczniki BDC w prawym słupku, strona kierowcy","Fuses: BMW 3 Series G20 / G21 (2018–) – box under the glove box, BDC fuses in the right pillar, driver side"],
  ["4.0","Kody błędów: 208 nowych (razem 568), opisy sprawdzone z listą kodów ogólnych SAE J2012 (DMV Delaware): lambda B1/B2 S2–S3, temperatury paliwa / oleju, przepustnica / pedał B i C, wastegate, pompa wtryskowa, wtryski i wypadanie zapłonów cyl. 5–8, CKP B, powietrze wtórne, katalizatory, EVAP, wspomaganie, alternator, skrzynia automatyczna (P07xx)","Fault codes: 208 new (568 total), definitions checked against the SAE J2012 generic list (Delaware DMV): O2 B1/B2 S2–S3, fuel / oil temperatures, throttle / pedal B and C, wastegate, injection pump, injectors and misfire cyl. 5–8, CKP B, secondary air, catalysts, EVAP, power steering, alternator, automatic transmission (P07xx)"],
  ["3.9","Jasny motyw: poprawione pola wyboru auta przy bezpiecznikach i inne pola / przyciski – teraz czytelne","Light theme: fixed vehicle picker fields in fuses and other fields / buttons – now readable"],
@@ -2183,6 +2194,32 @@ function toggle(id){const b=$(id);b.style.display=b.style.display==="none"?"bloc
 $("kodyb").addEventListener("click",()=>{if(toggle("kody")){renderKody();$("kq").focus()}});
 $("sciezb").addEventListener("click",()=>{if(toggle("sciez"))renderSciezki()});
 $("kalkb").addEventListener("click",()=>{if(toggle("kalk"))renderKalk()});
+// ---------- samoaktualizacja wersji HTML (otwartej z pliku) ----------
+(function(){
+ const RAW="https://raw.githubusercontent.com/ecuekspert/-ecu-ekspert-poradnik/main/poradnik.html";
+ const inFrame=window.top!==window&&location.href==="about:srcdoc";
+ const fileMode=location.protocol==="file:"||inFrame;
+ if(!fileMode||window.APP||/\bwv\b/.test(navigator.userAgent)||/EcuEkspert/i.test(location.pathname))return;
+ const ver=t=>{const m=/const WERSJA="([0-9]+(?:\.[0-9]+)*)/.exec(t||"");return m?m[1]:null};
+ const cmp=(a,b)=>{a=a.split(".");b=b.split(".");for(let i=0;i<Math.max(a.length,b.length);i++){const x=+(a[i]||0),y=+(b[i]||0);if(x!==y)return x>y?1:-1}return 0};
+ const cur=ver('const WERSJA="'+WERSJA);
+ const zm=t=>{const m=/const ZMIANY=\[\s*\["[^"]*","((?:[^"\\]|\\.)*)","((?:[^"\\]|\\.)*)"/.exec(t);return m?(lang==="en"?m[2]:m[1]).replace(/\\"/g,'"').slice(0,400):""};
+ const save=(html,nv)=>{const b=new Blob([html],{type:"text/html"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="poradnik.html";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)};
+ function box(html){let d=$("updbox");if(!d){d=document.createElement("div");d.id="updbox";document.body.appendChild(d)}d.innerHTML=html;return d}
+ setTimeout(()=>{fetch(RAW+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.text():null).then(t=>{
+  const nv=ver(t);if(!t||!nv||!cur||cmp(nv,cur)<=0)return;
+  let skip=null;try{skip=sessionStorage.getItem("updSkip")}catch(e){}if(skip===nv)return;
+  const co=zm(t);
+  const d=box(`<b>🔄 ${T2("Dostępna nowa wersja poradnika","A new version of the guide is available")}: ${nv}</b> <span class="kp">(${T2("masz","you have")} ${cur})</span>${co?`<div class="kp" style="margin:6px 0">${T2("Co nowego","What's new")}: ${co}</div>`:""}<div class="ub"><button id="updok">${T2("Pobierz i aktualizuj","Download and update")}</button><button id="updno">${T2("Później","Later")}</button></div>`);
+  $("updno").onclick=()=>{try{sessionStorage.setItem("updSkip",nv)}catch(e){}d.remove()};
+  $("updok").onclick=()=>{let ok=false;try{localStorage.setItem("porUpdH",t);localStorage.setItem("porUpdV",nv);ok=true}catch(e){try{localStorage.removeItem("porUpdH")}catch(x){}}
+   box(`<b>✔ ${T2("Pobrano wersję","Downloaded version")} ${nv}</b><div class="kp" style="margin:6px 0">${ok?T2("Program otworzy ją przy każdym uruchomieniu tego pliku. Możesz też zapisać nowy plik i podmienić stary.","It will open every time you start this file. You can also save the new file and replace the old one."):T2("Przeglądarka nie pozwoliła zapamiętać wersji – zapisz nowy plik i podmień stary.","The browser did not allow storing the version – save the new file and replace the old one.")}</div><div class="ub">${ok?`<button id="updgo">${T2("Otwórz nową wersję","Open new version")}</button>`:""}<button id="updsv">💾 ${T2("Zapisz nowy plik","Save new file")}</button><button id="updcl">✕</button></div>`);
+   $("updsv").onclick=()=>save(t,nv);$("updcl").onclick=()=>$("updbox").remove();
+   if(ok)$("updgo").onclick=()=>{try{window.top.location.reload()}catch(e){location.reload()}};
+  };
+ }).catch(()=>{})},2500);
+})();
+
 // ---------- 3.6: spis kart, wróć, motyw, czcionka ----------
 function renderSpis(){$("spisbody").innerHTML=cats.slice(1).map(c=>`<h4>${CN(c)}</h4>`+D.filter(d=>d.cat===c).map(d=>`<a href="#" data-go="${d.id}">${L(d).name}</a>`).join("")).join("")}
 $("spisb").addEventListener("click",()=>{if(toggle("spis"))renderSpis()});
